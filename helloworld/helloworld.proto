@@ -1,6 +1,8 @@
 syntax = "proto3";
+
 package helloworld;
-option go_package = "github.com/gjing123/proto/helloworld";
+
+option go_package = "github.com/jensenguo/proto/helloworld";
 
 import "google/api/annotations.proto";
 
