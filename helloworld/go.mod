@@ -1,4 +1,4 @@
-module github.com/gjing123/proto/helloworld
+module github.com/jensenguo/proto/helloworld
 
 go 1.17
 
