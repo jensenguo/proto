@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package helloworldv2;
+
+option go_package = "github.com/jensenguo/proto/helloworldv2";
+
+import "google/api/annotations.proto";
+
+// The greeting service definition.
+service Greeter {
+  // Sends a greeting
+  rpc SayHello (HelloRequest) returns (HelloReply) {
+    // HTTP get 请求，会将HelloRequest中的id作为path parameter
+    option (google.api.http) = {
+        get: "/helloworldv2/SayHello",
+    };
+  }
+}
+
+// The request message containing the user's name.
+message HelloRequest {
+  string name = 1;
+}
+
+// The response message containing the greetings
+message HelloReply {
+  string message = 1;
+}
