@@ -6,6 +6,8 @@ option go_package = "github.com/jensenguo/proto/helloworldv2";
 
 import "google/api/annotations.proto";
 
+import "validate/validate.proto";
+
 // The greeting service definition.
 service Greeter {
   // Sends a greeting
@@ -19,7 +21,7 @@ service Greeter {
 
 // The request message containing the user's name.
 message HelloRequest {
-  string name = 1;
+  string name = 1 [(validate.rules).string = {min_len:5, max_len:10}];
 }
 
 // The response message containing the greetings
