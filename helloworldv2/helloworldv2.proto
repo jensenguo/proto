@@ -10,9 +10,9 @@ import "google/api/annotations.proto";
 service Greeter {
   // Sends a greeting
   rpc SayHello (HelloRequest) returns (HelloReply) {
-    // HTTP get 请求，会将HelloRequest中的id作为path parameter
     option (google.api.http) = {
-        get: "/helloworldv2/SayHello",
+        post: "/helloworldv2/SayHello",
+        body: "*"
     };
   }
 }
