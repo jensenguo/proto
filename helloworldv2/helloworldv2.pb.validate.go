@@ -245,3 +245,203 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = HelloReplyValidationError{}
+
+// Validate checks the field values on CallbackRequest with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// first error encountered is returned, or nil if there are no violations.
+func (m *CallbackRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on CallbackRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// CallbackRequestMultiError, or nil if none found.
+func (m *CallbackRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *CallbackRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(errors) > 0 {
+		return CallbackRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// CallbackRequestMultiError is an error wrapping multiple validation errors
+// returned by CallbackRequest.ValidateAll() if the designated constraints
+// aren't met.
+type CallbackRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m CallbackRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m CallbackRequestMultiError) AllErrors() []error { return m }
+
+// CallbackRequestValidationError is the validation error returned by
+// CallbackRequest.Validate if the designated constraints aren't met.
+type CallbackRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e CallbackRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e CallbackRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e CallbackRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e CallbackRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e CallbackRequestValidationError) ErrorName() string { return "CallbackRequestValidationError" }
+
+// Error satisfies the builtin error interface
+func (e CallbackRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sCallbackRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = CallbackRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = CallbackRequestValidationError{}
+
+// Validate checks the field values on CallbackReply with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *CallbackReply) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on CallbackReply with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in CallbackReplyMultiError, or
+// nil if none found.
+func (m *CallbackReply) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *CallbackReply) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(errors) > 0 {
+		return CallbackReplyMultiError(errors)
+	}
+
+	return nil
+}
+
+// CallbackReplyMultiError is an error wrapping multiple validation errors
+// returned by CallbackReply.ValidateAll() if the designated constraints
+// aren't met.
+type CallbackReplyMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m CallbackReplyMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m CallbackReplyMultiError) AllErrors() []error { return m }
+
+// CallbackReplyValidationError is the validation error returned by
+// CallbackReply.Validate if the designated constraints aren't met.
+type CallbackReplyValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e CallbackReplyValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e CallbackReplyValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e CallbackReplyValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e CallbackReplyValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e CallbackReplyValidationError) ErrorName() string { return "CallbackReplyValidationError" }
+
+// Error satisfies the builtin error interface
+func (e CallbackReplyValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sCallbackReply.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = CallbackReplyValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = CallbackReplyValidationError{}
