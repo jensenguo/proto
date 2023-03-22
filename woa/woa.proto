@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package woa;
+
+option go_package = "github.com/jensenguo/proto/woa";
+
+import "google/api/annotations.proto";
+
+import "validate/validate.proto";
+
+// ProxySvr 微信公众号代理服务
+service ProxySvr {
+  // CheckSignature 签名校验接口
+  rpc CheckSignature (CheckSignatureReq) returns (CheckSignatureRsp) {
+    option (google.api.http) = {
+        get: "/woa.proxysvr/check_signature"
+    };
+  }
+}
+
+// CheckSignatureReq 签名校验接口请求
+message CheckSignatureReq {
+  string signature = 1;
+  int64 timestamp = 2;
+  int64 nonce = 3;
+  string echostr = 4;
+}
+
+// CheckSignatureRsp 签名校验接口回包
+message CheckSignatureRsp {
+  string echostr = 1;
+}
