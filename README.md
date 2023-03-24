@@ -5,4 +5,7 @@
 2、protoc --grpc-gateway_out=./ --proto_path=. helloworld.proto
 
 方式二、Kratos框架
+1
 protoc --proto_path=. --proto_path=../thirdparty --go_out=paths=source_relative:. --go-grpc_out=paths=source_relative:. --go-http_out=paths=source_relative:. --validate_out=lang=go:. *.proto
+2、自定义protobuf tags
+protoc --proto_path=. --proto_path=../thirdparty --gogo_out=paths=source_relative:. --go-grpc_out=paths=source_relative:. --go-http_out=paths=source_relative:. --validate_out=lang=go:. *.proto

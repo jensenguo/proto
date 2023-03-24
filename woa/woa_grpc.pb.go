@@ -24,6 +24,8 @@ const _ = grpc.SupportPackageIsVersion7
 type ProxySvrClient interface {
 	// CheckSignature 签名校验接口
 	CheckSignature(ctx context.Context, in *CheckSignatureReq, opts ...grpc.CallOption) (*CheckSignatureRsp, error)
+	// ReceiveMessage 接受普通消息接口
+	ReceiveMessage(ctx context.Context, in *ReceiveMessageReq, opts ...grpc.CallOption) (*ReceiveMessageRsp, error)
 }
 
 type proxySvrClient struct {
@@ -43,12 +45,23 @@ func (c *proxySvrClient) CheckSignature(ctx context.Context, in *CheckSignatureR
 	return out, nil
 }
 
+func (c *proxySvrClient) ReceiveMessage(ctx context.Context, in *ReceiveMessageReq, opts ...grpc.CallOption) (*ReceiveMessageRsp, error) {
+	out := new(ReceiveMessageRsp)
+	err := c.cc.Invoke(ctx, "/woa.ProxySvr/ReceiveMessage", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ProxySvrServer is the server API for ProxySvr service.
 // All implementations must embed UnimplementedProxySvrServer
 // for forward compatibility
 type ProxySvrServer interface {
 	// CheckSignature 签名校验接口
 	CheckSignature(context.Context, *CheckSignatureReq) (*CheckSignatureRsp, error)
+	// ReceiveMessage 接受普通消息接口
+	ReceiveMessage(context.Context, *ReceiveMessageReq) (*ReceiveMessageRsp, error)
 	mustEmbedUnimplementedProxySvrServer()
 }
 
@@ -58,6 +71,9 @@ type UnimplementedProxySvrServer struct {
 
 func (UnimplementedProxySvrServer) CheckSignature(context.Context, *CheckSignatureReq) (*CheckSignatureRsp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CheckSignature not implemented")
+}
+func (UnimplementedProxySvrServer) ReceiveMessage(context.Context, *ReceiveMessageReq) (*ReceiveMessageRsp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ReceiveMessage not implemented")
 }
 func (UnimplementedProxySvrServer) mustEmbedUnimplementedProxySvrServer() {}
 
@@ -90,6 +106,24 @@ func _ProxySvr_CheckSignature_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ProxySvr_ReceiveMessage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ReceiveMessageReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProxySvrServer).ReceiveMessage(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/woa.ProxySvr/ReceiveMessage",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProxySvrServer).ReceiveMessage(ctx, req.(*ReceiveMessageReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ProxySvr_ServiceDesc is the grpc.ServiceDesc for ProxySvr service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -100,6 +134,10 @@ var ProxySvr_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CheckSignature",
 			Handler:    _ProxySvr_CheckSignature_Handler,
+		},
+		{
+			MethodName: "ReceiveMessage",
+			Handler:    _ProxySvr_ReceiveMessage_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
