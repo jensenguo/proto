@@ -43,21 +43,21 @@ message CheckSignatureRsp {
 
 // MessageReq 接受普通消息接口请求
 message MessageReq {
-    string to_user_name = 1 [(gogoproto.moretags) = 'xml:"ToUserName,cdata,omitempty"'];
-    string from_user_name = 2 [(gogoproto.moretags) = 'xml:"FromUserName,cdata,omitempty"']; 
-    int64 create_time = 3 [(gogoproto.moretags) = 'xml:"CreateTime,omitempty"'];
-    string msg_type = 4 [(gogoproto.moretags) = 'xml:"MsgType,cdata,omitempty"'];
-    string content = 6 [(gogoproto.moretags) = 'xml:"Content,cdata,omitempty"'];
-    int64 msg_id = 7 [(gogoproto.moretags) = 'xml:"MsgId,omitempty"'];
-    int64 msg_data_id = 8 [(gogoproto.moretags) = 'xml:"MsgDataId,omitempty"'];
-    int64 idx = 9 [(gogoproto.moretags) = 'xml:"Id,omitempty"'];
+    string to_user_name = 1 [(gogoproto.moretags) = 'xml:",cdata"'];
+    string from_user_name = 2 [(gogoproto.moretags) = 'xml:",cdata"']; 
+    int64 create_time = 3 ;
+    string msg_type = 4 [(gogoproto.moretags) = 'xml:",cdata"'];
+    string content = 6 [(gogoproto.moretags) = 'xml:",cdata"'];
+    int64 msg_id = 7 ;
+    int64 msg_data_id = 8 ;
+    int64 idx = 9 ;
 }
 
 // MessageRsp 接受普通消息接口回包
 message MessageRsp {
-  string to_user_name = 1 [(gogoproto.moretags) = 'xml:"ToUserName,cdata,omitempty"'];
-  string from_user_name = 2 [(gogoproto.moretags) = 'xml:"FromUserName,cdata,omitempty"']; 
-  int64 create_time = 3 [(gogoproto.moretags) = 'xml:"CreateTime,omitempty"'];
-  string msg_type = 4 [(gogoproto.moretags) = 'xml:"MsgType,cdata,omitempty"'];
-  string content = 6 [(gogoproto.moretags) = 'xml:"Content,cdata,omitemptys"'];
+  string to_user_name = 1 [(gogoproto.moretags) = 'xml:",cdata"'];
+  string from_user_name = 2 [(gogoproto.moretags) = 'xml:",cdata"']; 
+  int64 create_time = 3 ;
+  string msg_type = 4 ;
+  string content = 6 [(gogoproto.moretags) = 'xml:",cdata"'];
 }
