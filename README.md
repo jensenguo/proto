@@ -9,3 +9,7 @@
 protoc --proto_path=. --proto_path=../thirdparty --go_out=paths=source_relative:. --go-grpc_out=paths=source_relative:. --go-http_out=paths=source_relative:. --validate_out=lang=go:. *.proto
 2、自定义protobuf tags
 protoc --proto_path=. --proto_path=../thirdparty --gogo_out=paths=source_relative:. --go-grpc_out=paths=source_relative:. --go-http_out=paths=source_relative:. --validate_out=lang=go:. *.proto
+
+
+# 协议说明
+woa 微信公众平台回调get请求默认Accept:*/*，默认回包编码采用application/json，所以woa_http.pb.go手动改成ctx.String.

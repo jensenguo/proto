@@ -24,8 +24,8 @@ const _ = grpc.SupportPackageIsVersion7
 type ProxySvrClient interface {
 	// CheckSignature 签名校验接口
 	CheckSignature(ctx context.Context, in *CheckSignatureReq, opts ...grpc.CallOption) (*CheckSignatureRsp, error)
-	// ReceiveMessage 接受普通消息接口
-	ReceiveMessage(ctx context.Context, in *ReceiveMessageReq, opts ...grpc.CallOption) (*ReceiveMessageRsp, error)
+	// Message 微信公众号消息回调接口（所有微信公众号消息使用这个接口）
+	Message(ctx context.Context, in *MessageReq, opts ...grpc.CallOption) (*MessageRsp, error)
 }
 
 type proxySvrClient struct {
@@ -45,9 +45,9 @@ func (c *proxySvrClient) CheckSignature(ctx context.Context, in *CheckSignatureR
 	return out, nil
 }
 
-func (c *proxySvrClient) ReceiveMessage(ctx context.Context, in *ReceiveMessageReq, opts ...grpc.CallOption) (*ReceiveMessageRsp, error) {
-	out := new(ReceiveMessageRsp)
-	err := c.cc.Invoke(ctx, "/woa.ProxySvr/ReceiveMessage", in, out, opts...)
+func (c *proxySvrClient) Message(ctx context.Context, in *MessageReq, opts ...grpc.CallOption) (*MessageRsp, error) {
+	out := new(MessageRsp)
+	err := c.cc.Invoke(ctx, "/woa.ProxySvr/Message", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -60,8 +60,8 @@ func (c *proxySvrClient) ReceiveMessage(ctx context.Context, in *ReceiveMessageR
 type ProxySvrServer interface {
 	// CheckSignature 签名校验接口
 	CheckSignature(context.Context, *CheckSignatureReq) (*CheckSignatureRsp, error)
-	// ReceiveMessage 接受普通消息接口
-	ReceiveMessage(context.Context, *ReceiveMessageReq) (*ReceiveMessageRsp, error)
+	// Message 微信公众号消息回调接口（所有微信公众号消息使用这个接口）
+	Message(context.Context, *MessageReq) (*MessageRsp, error)
 	mustEmbedUnimplementedProxySvrServer()
 }
 
@@ -72,8 +72,8 @@ type UnimplementedProxySvrServer struct {
 func (UnimplementedProxySvrServer) CheckSignature(context.Context, *CheckSignatureReq) (*CheckSignatureRsp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CheckSignature not implemented")
 }
-func (UnimplementedProxySvrServer) ReceiveMessage(context.Context, *ReceiveMessageReq) (*ReceiveMessageRsp, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ReceiveMessage not implemented")
+func (UnimplementedProxySvrServer) Message(context.Context, *MessageReq) (*MessageRsp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Message not implemented")
 }
 func (UnimplementedProxySvrServer) mustEmbedUnimplementedProxySvrServer() {}
 
@@ -106,20 +106,20 @@ func _ProxySvr_CheckSignature_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
-func _ProxySvr_ReceiveMessage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ReceiveMessageReq)
+func _ProxySvr_Message_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MessageReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ProxySvrServer).ReceiveMessage(ctx, in)
+		return srv.(ProxySvrServer).Message(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/woa.ProxySvr/ReceiveMessage",
+		FullMethod: "/woa.ProxySvr/Message",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProxySvrServer).ReceiveMessage(ctx, req.(*ReceiveMessageReq))
+		return srv.(ProxySvrServer).Message(ctx, req.(*MessageReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -136,8 +136,8 @@ var ProxySvr_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _ProxySvr_CheckSignature_Handler,
 		},
 		{
-			MethodName: "ReceiveMessage",
-			Handler:    _ProxySvr_ReceiveMessage_Handler,
+			MethodName: "Message",
+			Handler:    _ProxySvr_Message_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

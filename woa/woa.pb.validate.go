@@ -249,22 +249,22 @@ var _ interface {
 	ErrorName() string
 } = CheckSignatureRspValidationError{}
 
-// Validate checks the field values on ReceiveMessageReq with the rules defined
-// in the proto definition for this message. If any rules are violated, the
-// first error encountered is returned, or nil if there are no violations.
-func (m *ReceiveMessageReq) Validate() error {
+// Validate checks the field values on MessageReq with the rules defined in the
+// proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *MessageReq) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on ReceiveMessageReq with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, the result is a list of violation errors wrapped in
-// ReceiveMessageReqMultiError, or nil if none found.
-func (m *ReceiveMessageReq) ValidateAll() error {
+// ValidateAll checks the field values on MessageReq with the rules defined in
+// the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in MessageReqMultiError, or
+// nil if none found.
+func (m *MessageReq) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *ReceiveMessageReq) validate(all bool) error {
+func (m *MessageReq) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -288,19 +288,18 @@ func (m *ReceiveMessageReq) validate(all bool) error {
 	// no validation rules for Idx
 
 	if len(errors) > 0 {
-		return ReceiveMessageReqMultiError(errors)
+		return MessageReqMultiError(errors)
 	}
 
 	return nil
 }
 
-// ReceiveMessageReqMultiError is an error wrapping multiple validation errors
-// returned by ReceiveMessageReq.ValidateAll() if the designated constraints
-// aren't met.
-type ReceiveMessageReqMultiError []error
+// MessageReqMultiError is an error wrapping multiple validation errors
+// returned by MessageReq.ValidateAll() if the designated constraints aren't met.
+type MessageReqMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m ReceiveMessageReqMultiError) Error() string {
+func (m MessageReqMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -309,11 +308,11 @@ func (m ReceiveMessageReqMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m ReceiveMessageReqMultiError) AllErrors() []error { return m }
+func (m MessageReqMultiError) AllErrors() []error { return m }
 
-// ReceiveMessageReqValidationError is the validation error returned by
-// ReceiveMessageReq.Validate if the designated constraints aren't met.
-type ReceiveMessageReqValidationError struct {
+// MessageReqValidationError is the validation error returned by
+// MessageReq.Validate if the designated constraints aren't met.
+type MessageReqValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -321,24 +320,22 @@ type ReceiveMessageReqValidationError struct {
 }
 
 // Field function returns field value.
-func (e ReceiveMessageReqValidationError) Field() string { return e.field }
+func (e MessageReqValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e ReceiveMessageReqValidationError) Reason() string { return e.reason }
+func (e MessageReqValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e ReceiveMessageReqValidationError) Cause() error { return e.cause }
+func (e MessageReqValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e ReceiveMessageReqValidationError) Key() bool { return e.key }
+func (e MessageReqValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e ReceiveMessageReqValidationError) ErrorName() string {
-	return "ReceiveMessageReqValidationError"
-}
+func (e MessageReqValidationError) ErrorName() string { return "MessageReqValidationError" }
 
 // Error satisfies the builtin error interface
-func (e ReceiveMessageReqValidationError) Error() string {
+func (e MessageReqValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -350,14 +347,14 @@ func (e ReceiveMessageReqValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sReceiveMessageReq.%s: %s%s",
+		"invalid %sMessageReq.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = ReceiveMessageReqValidationError{}
+var _ error = MessageReqValidationError{}
 
 var _ interface {
 	Field() string
@@ -365,24 +362,24 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = ReceiveMessageReqValidationError{}
+} = MessageReqValidationError{}
 
-// Validate checks the field values on ReceiveMessageRsp with the rules defined
-// in the proto definition for this message. If any rules are violated, the
-// first error encountered is returned, or nil if there are no violations.
-func (m *ReceiveMessageRsp) Validate() error {
+// Validate checks the field values on MessageRsp with the rules defined in the
+// proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *MessageRsp) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on ReceiveMessageRsp with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, the result is a list of violation errors wrapped in
-// ReceiveMessageRspMultiError, or nil if none found.
-func (m *ReceiveMessageRsp) ValidateAll() error {
+// ValidateAll checks the field values on MessageRsp with the rules defined in
+// the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in MessageRspMultiError, or
+// nil if none found.
+func (m *MessageRsp) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *ReceiveMessageRsp) validate(all bool) error {
+func (m *MessageRsp) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -400,19 +397,18 @@ func (m *ReceiveMessageRsp) validate(all bool) error {
 	// no validation rules for Content
 
 	if len(errors) > 0 {
-		return ReceiveMessageRspMultiError(errors)
+		return MessageRspMultiError(errors)
 	}
 
 	return nil
 }
 
-// ReceiveMessageRspMultiError is an error wrapping multiple validation errors
-// returned by ReceiveMessageRsp.ValidateAll() if the designated constraints
-// aren't met.
-type ReceiveMessageRspMultiError []error
+// MessageRspMultiError is an error wrapping multiple validation errors
+// returned by MessageRsp.ValidateAll() if the designated constraints aren't met.
+type MessageRspMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m ReceiveMessageRspMultiError) Error() string {
+func (m MessageRspMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -421,11 +417,11 @@ func (m ReceiveMessageRspMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m ReceiveMessageRspMultiError) AllErrors() []error { return m }
+func (m MessageRspMultiError) AllErrors() []error { return m }
 
-// ReceiveMessageRspValidationError is the validation error returned by
-// ReceiveMessageRsp.Validate if the designated constraints aren't met.
-type ReceiveMessageRspValidationError struct {
+// MessageRspValidationError is the validation error returned by
+// MessageRsp.Validate if the designated constraints aren't met.
+type MessageRspValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -433,24 +429,22 @@ type ReceiveMessageRspValidationError struct {
 }
 
 // Field function returns field value.
-func (e ReceiveMessageRspValidationError) Field() string { return e.field }
+func (e MessageRspValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e ReceiveMessageRspValidationError) Reason() string { return e.reason }
+func (e MessageRspValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e ReceiveMessageRspValidationError) Cause() error { return e.cause }
+func (e MessageRspValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e ReceiveMessageRspValidationError) Key() bool { return e.key }
+func (e MessageRspValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e ReceiveMessageRspValidationError) ErrorName() string {
-	return "ReceiveMessageRspValidationError"
-}
+func (e MessageRspValidationError) ErrorName() string { return "MessageRspValidationError" }
 
 // Error satisfies the builtin error interface
-func (e ReceiveMessageRspValidationError) Error() string {
+func (e MessageRspValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -462,14 +456,14 @@ func (e ReceiveMessageRspValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sReceiveMessageRsp.%s: %s%s",
+		"invalid %sMessageRsp.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = ReceiveMessageRspValidationError{}
+var _ error = MessageRspValidationError{}
 
 var _ interface {
 	Field() string
@@ -477,4 +471,4 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = ReceiveMessageRspValidationError{}
+} = MessageRspValidationError{}

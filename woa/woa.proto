@@ -15,14 +15,14 @@ service ProxySvr {
   // CheckSignature 签名校验接口
   rpc CheckSignature (CheckSignatureReq) returns (CheckSignatureRsp) {
     option (google.api.http) = {
-        get: "/woa.proxysvr/check_signature"
+        get: "/woa.proxysvr/message"
         response_body: "echostr"
     };
   }
-  // ReceiveMessage 接受普通消息接口
-  rpc ReceiveMessage (ReceiveMessageReq) returns (ReceiveMessageRsp) {
+  // Message 微信公众号消息回调接口（所有微信公众号消息使用这个接口）
+  rpc Message (MessageReq) returns (MessageRsp) {
     option (google.api.http) = {
-        post: "/woa.proxysvr/receive_message"
+        post: "/woa.proxysvr/message"
         body: "*"
     };
   }
@@ -41,23 +41,23 @@ message CheckSignatureRsp {
   string echostr = 1;
 }
 
-// ReceiveMessageReq 接受普通消息接口请求
-message ReceiveMessageReq {
-    string to_user_name = 1 [(gogoproto.moretags) = 'xml:"ToUserName"'];
-    string from_user_name = 2 [(gogoproto.moretags) = 'xml:"FromUserName"']; 
-    int64 create_time = 3 [(gogoproto.moretags) = 'xml:"CreateTime"'];
-    string msg_type = 4 [(gogoproto.moretags) = 'xml:"MsgType"'];
-    string content = 6 [(gogoproto.moretags) = 'xml:"Content"'];
-    int64 msg_id = 7 [(gogoproto.moretags) = 'xml:"MsgId"'];
-    int64 msg_data_id = 8 [(gogoproto.moretags) = 'xml:"MsgDataId"'];
-    int64 idx = 9 [(gogoproto.moretags) = 'xml:"Id"'];
+// MessageReq 接受普通消息接口请求
+message MessageReq {
+    string to_user_name = 1 [(gogoproto.moretags) = 'xml:"ToUserName,cdata,omitempty"'];
+    string from_user_name = 2 [(gogoproto.moretags) = 'xml:"FromUserName,cdata,omitempty"']; 
+    int64 create_time = 3 [(gogoproto.moretags) = 'xml:"CreateTime,omitempty"'];
+    string msg_type = 4 [(gogoproto.moretags) = 'xml:"MsgType,cdata,omitempty"'];
+    string content = 6 [(gogoproto.moretags) = 'xml:"Content,cdata,omitempty"'];
+    int64 msg_id = 7 [(gogoproto.moretags) = 'xml:"MsgId,omitempty"'];
+    int64 msg_data_id = 8 [(gogoproto.moretags) = 'xml:"MsgDataId,omitempty"'];
+    int64 idx = 9 [(gogoproto.moretags) = 'xml:"Id,omitempty"'];
 }
 
-// ReceiveMessageRsp 接受普通消息接口回包
-message ReceiveMessageRsp {
-  string to_user_name = 1 [(gogoproto.moretags) = 'xml:"ToUserName"'];
-  string from_user_name = 2 [(gogoproto.moretags) = 'xml:"FromUserName"']; 
-  int64 create_time = 3 [(gogoproto.moretags) = 'xml:"CreateTime"'];
-  string msg_type = 4 [(gogoproto.moretags) = 'xml:"MsgType"'];
-  string content = 6 [(gogoproto.moretags) = 'xml:"Content"'];
+// MessageRsp 接受普通消息接口回包
+message MessageRsp {
+  string to_user_name = 1 [(gogoproto.moretags) = 'xml:"ToUserName,cdata,omitempty"'];
+  string from_user_name = 2 [(gogoproto.moretags) = 'xml:"FromUserName,cdata,omitempty"']; 
+  int64 create_time = 3 [(gogoproto.moretags) = 'xml:"CreateTime,omitempty"'];
+  string msg_type = 4 [(gogoproto.moretags) = 'xml:"MsgType,cdata,omitempty"'];
+  string content = 6 [(gogoproto.moretags) = 'xml:"Content,cdata,omitemptys"'];
 }
