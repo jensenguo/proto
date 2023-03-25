@@ -145,44 +145,42 @@ var _ interface {
 	ErrorName() string
 } = CheckSignatureReqValidationError{}
 
-// Validate checks the field values on CheckSignatureRsp with the rules defined
-// in the proto definition for this message. If any rules are violated, the
-// first error encountered is returned, or nil if there are no violations.
-func (m *CheckSignatureRsp) Validate() error {
+// Validate checks the field values on Message with the rules defined in the
+// proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *Message) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on CheckSignatureRsp with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, the result is a list of violation errors wrapped in
-// CheckSignatureRspMultiError, or nil if none found.
-func (m *CheckSignatureRsp) ValidateAll() error {
+// ValidateAll checks the field values on Message with the rules defined in the
+// proto definition for this message. If any rules are violated, the result is
+// a list of violation errors wrapped in MessageMultiError, or nil if none found.
+func (m *Message) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *CheckSignatureRsp) validate(all bool) error {
+func (m *Message) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
 
 	var errors []error
 
-	// no validation rules for Echostr
+	// no validation rules for Text
 
 	if len(errors) > 0 {
-		return CheckSignatureRspMultiError(errors)
+		return MessageMultiError(errors)
 	}
 
 	return nil
 }
 
-// CheckSignatureRspMultiError is an error wrapping multiple validation errors
-// returned by CheckSignatureRsp.ValidateAll() if the designated constraints
-// aren't met.
-type CheckSignatureRspMultiError []error
+// MessageMultiError is an error wrapping multiple validation errors returned
+// by Message.ValidateAll() if the designated constraints aren't met.
+type MessageMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m CheckSignatureRspMultiError) Error() string {
+func (m MessageMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -191,11 +189,11 @@ func (m CheckSignatureRspMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m CheckSignatureRspMultiError) AllErrors() []error { return m }
+func (m MessageMultiError) AllErrors() []error { return m }
 
-// CheckSignatureRspValidationError is the validation error returned by
-// CheckSignatureRsp.Validate if the designated constraints aren't met.
-type CheckSignatureRspValidationError struct {
+// MessageValidationError is the validation error returned by Message.Validate
+// if the designated constraints aren't met.
+type MessageValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -203,24 +201,22 @@ type CheckSignatureRspValidationError struct {
 }
 
 // Field function returns field value.
-func (e CheckSignatureRspValidationError) Field() string { return e.field }
+func (e MessageValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e CheckSignatureRspValidationError) Reason() string { return e.reason }
+func (e MessageValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e CheckSignatureRspValidationError) Cause() error { return e.cause }
+func (e MessageValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e CheckSignatureRspValidationError) Key() bool { return e.key }
+func (e MessageValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e CheckSignatureRspValidationError) ErrorName() string {
-	return "CheckSignatureRspValidationError"
-}
+func (e MessageValidationError) ErrorName() string { return "MessageValidationError" }
 
 // Error satisfies the builtin error interface
-func (e CheckSignatureRspValidationError) Error() string {
+func (e MessageValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -232,14 +228,14 @@ func (e CheckSignatureRspValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sCheckSignatureRsp.%s: %s%s",
+		"invalid %sMessage.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = CheckSignatureRspValidationError{}
+var _ error = MessageValidationError{}
 
 var _ interface {
 	Field() string
@@ -247,7 +243,7 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = CheckSignatureRspValidationError{}
+} = MessageValidationError{}
 
 // Validate checks the field values on ReceiveMessageReq with the rules defined
 // in the proto definition for this message. If any rules are violated, the
