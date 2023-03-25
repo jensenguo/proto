@@ -24,7 +24,7 @@ const OperationProxySvrReceiveMessage = "/woa.ProxySvr/ReceiveMessage"
 
 type ProxySvrHTTPServer interface {
 	// CheckSignature CheckSignature 签名校验接口
-	CheckSignature(context.Context, *CheckSignatureReq) (*Message, error)
+	CheckSignature(context.Context, *CheckSignatureReq) (*CheckSignatureRsp, error)
 	// ReceiveMessage ReceiveMessage 接受普通消息接口
 	ReceiveMessage(context.Context, *ReceiveMessageReq) (*ReceiveMessageRsp, error)
 }
@@ -49,8 +49,8 @@ func _ProxySvr_CheckSignature0_HTTP_Handler(srv ProxySvrHTTPServer) func(ctx htt
 		if err != nil {
 			return err
 		}
-		reply := out.(*Message)
-		return ctx.Result(200, reply)
+		reply := out.(*CheckSignatureRsp)
+		return ctx.String(200, reply.Echostr)
 	}
 }
 
@@ -74,7 +74,7 @@ func _ProxySvr_ReceiveMessage0_HTTP_Handler(srv ProxySvrHTTPServer) func(ctx htt
 }
 
 type ProxySvrHTTPClient interface {
-	CheckSignature(ctx context.Context, req *CheckSignatureReq, opts ...http.CallOption) (rsp *Message, err error)
+	CheckSignature(ctx context.Context, req *CheckSignatureReq, opts ...http.CallOption) (rsp *CheckSignatureRsp, err error)
 	ReceiveMessage(ctx context.Context, req *ReceiveMessageReq, opts ...http.CallOption) (rsp *ReceiveMessageRsp, err error)
 }
 
@@ -86,13 +86,13 @@ func NewProxySvrHTTPClient(client *http.Client) ProxySvrHTTPClient {
 	return &ProxySvrHTTPClientImpl{client}
 }
 
-func (c *ProxySvrHTTPClientImpl) CheckSignature(ctx context.Context, in *CheckSignatureReq, opts ...http.CallOption) (*Message, error) {
-	var out Message
+func (c *ProxySvrHTTPClientImpl) CheckSignature(ctx context.Context, in *CheckSignatureReq, opts ...http.CallOption) (*CheckSignatureRsp, error) {
+	var out CheckSignatureRsp
 	pattern := "/woa.proxysvr/check_signature"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation(OperationProxySvrCheckSignature))
 	opts = append(opts, http.PathTemplate(pattern))
-	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out.Echostr, opts...)
 	if err != nil {
 		return nil, err
 	}

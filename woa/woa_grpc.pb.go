@@ -23,7 +23,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ProxySvrClient interface {
 	// CheckSignature 签名校验接口
-	CheckSignature(ctx context.Context, in *CheckSignatureReq, opts ...grpc.CallOption) (*Message, error)
+	CheckSignature(ctx context.Context, in *CheckSignatureReq, opts ...grpc.CallOption) (*CheckSignatureRsp, error)
 	// ReceiveMessage 接受普通消息接口
 	ReceiveMessage(ctx context.Context, in *ReceiveMessageReq, opts ...grpc.CallOption) (*ReceiveMessageRsp, error)
 }
@@ -36,8 +36,8 @@ func NewProxySvrClient(cc grpc.ClientConnInterface) ProxySvrClient {
 	return &proxySvrClient{cc}
 }
 
-func (c *proxySvrClient) CheckSignature(ctx context.Context, in *CheckSignatureReq, opts ...grpc.CallOption) (*Message, error) {
-	out := new(Message)
+func (c *proxySvrClient) CheckSignature(ctx context.Context, in *CheckSignatureReq, opts ...grpc.CallOption) (*CheckSignatureRsp, error) {
+	out := new(CheckSignatureRsp)
 	err := c.cc.Invoke(ctx, "/woa.ProxySvr/CheckSignature", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -59,7 +59,7 @@ func (c *proxySvrClient) ReceiveMessage(ctx context.Context, in *ReceiveMessageR
 // for forward compatibility
 type ProxySvrServer interface {
 	// CheckSignature 签名校验接口
-	CheckSignature(context.Context, *CheckSignatureReq) (*Message, error)
+	CheckSignature(context.Context, *CheckSignatureReq) (*CheckSignatureRsp, error)
 	// ReceiveMessage 接受普通消息接口
 	ReceiveMessage(context.Context, *ReceiveMessageReq) (*ReceiveMessageRsp, error)
 	mustEmbedUnimplementedProxySvrServer()
@@ -69,7 +69,7 @@ type ProxySvrServer interface {
 type UnimplementedProxySvrServer struct {
 }
 
-func (UnimplementedProxySvrServer) CheckSignature(context.Context, *CheckSignatureReq) (*Message, error) {
+func (UnimplementedProxySvrServer) CheckSignature(context.Context, *CheckSignatureReq) (*CheckSignatureRsp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CheckSignature not implemented")
 }
 func (UnimplementedProxySvrServer) ReceiveMessage(context.Context, *ReceiveMessageReq) (*ReceiveMessageRsp, error) {

@@ -13,9 +13,10 @@ import "gogoproto/gogo.proto";
 // ProxySvr 微信公众号代理服务
 service ProxySvr {
   // CheckSignature 签名校验接口
-  rpc CheckSignature (CheckSignatureReq) returns (Message) {
+  rpc CheckSignature (CheckSignatureReq) returns (CheckSignatureRsp) {
     option (google.api.http) = {
         get: "/woa.proxysvr/check_signature"
+        response_body: "echostr"
     };
   }
   // ReceiveMessage 接受普通消息接口
@@ -35,8 +36,9 @@ message CheckSignatureReq {
   string echostr = 4;
 }
 
-message Message {
-  string text = 1;
+// CheckSignatureReq 签名校验接口回报
+message CheckSignatureRsp {
+  string echostr = 1;
 }
 
 // ReceiveMessageReq 接受普通消息接口请求
