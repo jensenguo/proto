@@ -386,15 +386,98 @@ func (m *MessageRsp) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for ToUserName
+	// no validation rules for XMLName
 
-	// no validation rules for FromUserName
+	if all {
+		switch v := interface{}(m.GetToUserName()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, MessageRspValidationError{
+					field:  "ToUserName",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, MessageRspValidationError{
+					field:  "ToUserName",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetToUserName()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return MessageRspValidationError{
+				field:  "ToUserName",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if all {
+		switch v := interface{}(m.GetFromUserName()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, MessageRspValidationError{
+					field:  "FromUserName",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, MessageRspValidationError{
+					field:  "FromUserName",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetFromUserName()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return MessageRspValidationError{
+				field:  "FromUserName",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
 
 	// no validation rules for CreateTime
 
 	// no validation rules for MsgType
 
-	// no validation rules for Content
+	if all {
+		switch v := interface{}(m.GetContent()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, MessageRspValidationError{
+					field:  "Content",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, MessageRspValidationError{
+					field:  "Content",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetContent()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return MessageRspValidationError{
+				field:  "Content",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
 
 	if len(errors) > 0 {
 		return MessageRspMultiError(errors)
@@ -472,3 +555,305 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = MessageRspValidationError{}
+
+// Validate checks the field values on ToUserName with the rules defined in the
+// proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *ToUserName) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ToUserName with the rules defined in
+// the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in ToUserNameMultiError, or
+// nil if none found.
+func (m *ToUserName) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ToUserName) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for ToUserName
+
+	if len(errors) > 0 {
+		return ToUserNameMultiError(errors)
+	}
+
+	return nil
+}
+
+// ToUserNameMultiError is an error wrapping multiple validation errors
+// returned by ToUserName.ValidateAll() if the designated constraints aren't met.
+type ToUserNameMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ToUserNameMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ToUserNameMultiError) AllErrors() []error { return m }
+
+// ToUserNameValidationError is the validation error returned by
+// ToUserName.Validate if the designated constraints aren't met.
+type ToUserNameValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ToUserNameValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ToUserNameValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ToUserNameValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ToUserNameValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ToUserNameValidationError) ErrorName() string { return "ToUserNameValidationError" }
+
+// Error satisfies the builtin error interface
+func (e ToUserNameValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sToUserName.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ToUserNameValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ToUserNameValidationError{}
+
+// Validate checks the field values on FromUserName with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *FromUserName) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on FromUserName with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in FromUserNameMultiError, or
+// nil if none found.
+func (m *FromUserName) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *FromUserName) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for FromUserName
+
+	if len(errors) > 0 {
+		return FromUserNameMultiError(errors)
+	}
+
+	return nil
+}
+
+// FromUserNameMultiError is an error wrapping multiple validation errors
+// returned by FromUserName.ValidateAll() if the designated constraints aren't met.
+type FromUserNameMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m FromUserNameMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m FromUserNameMultiError) AllErrors() []error { return m }
+
+// FromUserNameValidationError is the validation error returned by
+// FromUserName.Validate if the designated constraints aren't met.
+type FromUserNameValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e FromUserNameValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e FromUserNameValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e FromUserNameValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e FromUserNameValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e FromUserNameValidationError) ErrorName() string { return "FromUserNameValidationError" }
+
+// Error satisfies the builtin error interface
+func (e FromUserNameValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sFromUserName.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = FromUserNameValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = FromUserNameValidationError{}
+
+// Validate checks the field values on Content with the rules defined in the
+// proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *Content) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on Content with the rules defined in the
+// proto definition for this message. If any rules are violated, the result is
+// a list of violation errors wrapped in ContentMultiError, or nil if none found.
+func (m *Content) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *Content) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Content
+
+	if len(errors) > 0 {
+		return ContentMultiError(errors)
+	}
+
+	return nil
+}
+
+// ContentMultiError is an error wrapping multiple validation errors returned
+// by Content.ValidateAll() if the designated constraints aren't met.
+type ContentMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ContentMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ContentMultiError) AllErrors() []error { return m }
+
+// ContentValidationError is the validation error returned by Content.Validate
+// if the designated constraints aren't met.
+type ContentValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ContentValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ContentValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ContentValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ContentValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ContentValidationError) ErrorName() string { return "ContentValidationError" }
+
+// Error satisfies the builtin error interface
+func (e ContentValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sContent.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ContentValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ContentValidationError{}
