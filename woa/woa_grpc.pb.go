@@ -18,126 +18,126 @@ import (
 // Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
-// ProxySvrClient is the client API for ProxySvr service.
+// BaseMsgSvrClient is the client API for BaseMsgSvr service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type ProxySvrClient interface {
+type BaseMsgSvrClient interface {
 	// CheckSignature 签名校验接口
 	CheckSignature(ctx context.Context, in *CheckSignatureReq, opts ...grpc.CallOption) (*CheckSignatureRsp, error)
 	// Message 微信公众号消息回调接口（所有微信公众号消息使用这个接口）
 	Message(ctx context.Context, in *MessageReq, opts ...grpc.CallOption) (*MessageRsp, error)
 }
 
-type proxySvrClient struct {
+type baseMsgSvrClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewProxySvrClient(cc grpc.ClientConnInterface) ProxySvrClient {
-	return &proxySvrClient{cc}
+func NewBaseMsgSvrClient(cc grpc.ClientConnInterface) BaseMsgSvrClient {
+	return &baseMsgSvrClient{cc}
 }
 
-func (c *proxySvrClient) CheckSignature(ctx context.Context, in *CheckSignatureReq, opts ...grpc.CallOption) (*CheckSignatureRsp, error) {
+func (c *baseMsgSvrClient) CheckSignature(ctx context.Context, in *CheckSignatureReq, opts ...grpc.CallOption) (*CheckSignatureRsp, error) {
 	out := new(CheckSignatureRsp)
-	err := c.cc.Invoke(ctx, "/woa.ProxySvr/CheckSignature", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/woa.BaseMsgSvr/CheckSignature", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *proxySvrClient) Message(ctx context.Context, in *MessageReq, opts ...grpc.CallOption) (*MessageRsp, error) {
+func (c *baseMsgSvrClient) Message(ctx context.Context, in *MessageReq, opts ...grpc.CallOption) (*MessageRsp, error) {
 	out := new(MessageRsp)
-	err := c.cc.Invoke(ctx, "/woa.ProxySvr/Message", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/woa.BaseMsgSvr/Message", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// ProxySvrServer is the server API for ProxySvr service.
-// All implementations must embed UnimplementedProxySvrServer
+// BaseMsgSvrServer is the server API for BaseMsgSvr service.
+// All implementations must embed UnimplementedBaseMsgSvrServer
 // for forward compatibility
-type ProxySvrServer interface {
+type BaseMsgSvrServer interface {
 	// CheckSignature 签名校验接口
 	CheckSignature(context.Context, *CheckSignatureReq) (*CheckSignatureRsp, error)
 	// Message 微信公众号消息回调接口（所有微信公众号消息使用这个接口）
 	Message(context.Context, *MessageReq) (*MessageRsp, error)
-	mustEmbedUnimplementedProxySvrServer()
+	mustEmbedUnimplementedBaseMsgSvrServer()
 }
 
-// UnimplementedProxySvrServer must be embedded to have forward compatible implementations.
-type UnimplementedProxySvrServer struct {
+// UnimplementedBaseMsgSvrServer must be embedded to have forward compatible implementations.
+type UnimplementedBaseMsgSvrServer struct {
 }
 
-func (UnimplementedProxySvrServer) CheckSignature(context.Context, *CheckSignatureReq) (*CheckSignatureRsp, error) {
+func (UnimplementedBaseMsgSvrServer) CheckSignature(context.Context, *CheckSignatureReq) (*CheckSignatureRsp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CheckSignature not implemented")
 }
-func (UnimplementedProxySvrServer) Message(context.Context, *MessageReq) (*MessageRsp, error) {
+func (UnimplementedBaseMsgSvrServer) Message(context.Context, *MessageReq) (*MessageRsp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Message not implemented")
 }
-func (UnimplementedProxySvrServer) mustEmbedUnimplementedProxySvrServer() {}
+func (UnimplementedBaseMsgSvrServer) mustEmbedUnimplementedBaseMsgSvrServer() {}
 
-// UnsafeProxySvrServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to ProxySvrServer will
+// UnsafeBaseMsgSvrServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to BaseMsgSvrServer will
 // result in compilation errors.
-type UnsafeProxySvrServer interface {
-	mustEmbedUnimplementedProxySvrServer()
+type UnsafeBaseMsgSvrServer interface {
+	mustEmbedUnimplementedBaseMsgSvrServer()
 }
 
-func RegisterProxySvrServer(s grpc.ServiceRegistrar, srv ProxySvrServer) {
-	s.RegisterService(&ProxySvr_ServiceDesc, srv)
+func RegisterBaseMsgSvrServer(s grpc.ServiceRegistrar, srv BaseMsgSvrServer) {
+	s.RegisterService(&BaseMsgSvr_ServiceDesc, srv)
 }
 
-func _ProxySvr_CheckSignature_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _BaseMsgSvr_CheckSignature_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CheckSignatureReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ProxySvrServer).CheckSignature(ctx, in)
+		return srv.(BaseMsgSvrServer).CheckSignature(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/woa.ProxySvr/CheckSignature",
+		FullMethod: "/woa.BaseMsgSvr/CheckSignature",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProxySvrServer).CheckSignature(ctx, req.(*CheckSignatureReq))
+		return srv.(BaseMsgSvrServer).CheckSignature(ctx, req.(*CheckSignatureReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _ProxySvr_Message_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _BaseMsgSvr_Message_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(MessageReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ProxySvrServer).Message(ctx, in)
+		return srv.(BaseMsgSvrServer).Message(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/woa.ProxySvr/Message",
+		FullMethod: "/woa.BaseMsgSvr/Message",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProxySvrServer).Message(ctx, req.(*MessageReq))
+		return srv.(BaseMsgSvrServer).Message(ctx, req.(*MessageReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// ProxySvr_ServiceDesc is the grpc.ServiceDesc for ProxySvr service.
+// BaseMsgSvr_ServiceDesc is the grpc.ServiceDesc for BaseMsgSvr service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var ProxySvr_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "woa.ProxySvr",
-	HandlerType: (*ProxySvrServer)(nil),
+var BaseMsgSvr_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "woa.BaseMsgSvr",
+	HandlerType: (*BaseMsgSvrServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "CheckSignature",
-			Handler:    _ProxySvr_CheckSignature_Handler,
+			Handler:    _BaseMsgSvr_CheckSignature_Handler,
 		},
 		{
 			MethodName: "Message",
-			Handler:    _ProxySvr_Message_Handler,
+			Handler:    _BaseMsgSvr_Message_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

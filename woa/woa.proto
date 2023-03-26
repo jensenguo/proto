@@ -11,19 +11,19 @@ import "validate/validate.proto";
 import "gogoproto/gogo.proto";
 
 
-// ProxySvr 微信公众号代理服务
-service ProxySvr {
+// BaseMsgSvr 基础消息服务
+service BaseMsgSvr {
   // CheckSignature 签名校验接口
   rpc CheckSignature (CheckSignatureReq) returns (CheckSignatureRsp) {
     option (google.api.http) = {
-        get: "/woa.proxysvr/message"
+        get: "/woa.base_msg_svr/message"
         response_body: "echostr"
     };
   }
   // Message 微信公众号消息回调接口（所有微信公众号消息使用这个接口）
   rpc Message (MessageReq) returns (MessageRsp) {
     option (google.api.http) = {
-        post: "/woa.proxysvr/message"
+        post: "/woa.base_msg_svr/message"
         body: "*"
     };
   }

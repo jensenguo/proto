@@ -19,29 +19,29 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
-const OperationProxySvrCheckSignature = "/woa.ProxySvr/CheckSignature"
-const OperationProxySvrMessage = "/woa.ProxySvr/Message"
+const OperationBaseMsgSvrCheckSignature = "/woa.BaseMsgSvr/CheckSignature"
+const OperationBaseMsgSvrMessage = "/woa.BaseMsgSvr/Message"
 
-type ProxySvrHTTPServer interface {
+type BaseMsgSvrHTTPServer interface {
 	// CheckSignature CheckSignature 签名校验接口
 	CheckSignature(context.Context, *CheckSignatureReq) (*CheckSignatureRsp, error)
 	// Message Message 微信公众号消息回调接口（所有微信公众号消息使用这个接口）
 	Message(context.Context, *MessageReq) (*MessageRsp, error)
 }
 
-func RegisterProxySvrHTTPServer(s *http.Server, srv ProxySvrHTTPServer) {
+func RegisterBaseMsgSvrHTTPServer(s *http.Server, srv BaseMsgSvrHTTPServer) {
 	r := s.Route("/")
-	r.GET("/woa.proxysvr/message", _ProxySvr_CheckSignature0_HTTP_Handler(srv))
-	r.POST("/woa.proxysvr/message", _ProxySvr_Message0_HTTP_Handler(srv))
+	r.GET("/woa.base_msg_svr/message", _BaseMsgSvr_CheckSignature0_HTTP_Handler(srv))
+	r.POST("/woa.base_msg_svr/message", _BaseMsgSvr_Message0_HTTP_Handler(srv))
 }
 
-func _ProxySvr_CheckSignature0_HTTP_Handler(srv ProxySvrHTTPServer) func(ctx http.Context) error {
+func _BaseMsgSvr_CheckSignature0_HTTP_Handler(srv BaseMsgSvrHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in CheckSignatureReq
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationProxySvrCheckSignature)
+		http.SetOperation(ctx, OperationBaseMsgSvrCheckSignature)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
 			return srv.CheckSignature(ctx, req.(*CheckSignatureReq))
 		})
@@ -54,13 +54,13 @@ func _ProxySvr_CheckSignature0_HTTP_Handler(srv ProxySvrHTTPServer) func(ctx htt
 	}
 }
 
-func _ProxySvr_Message0_HTTP_Handler(srv ProxySvrHTTPServer) func(ctx http.Context) error {
+func _BaseMsgSvr_Message0_HTTP_Handler(srv BaseMsgSvrHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in MessageReq
 		if err := ctx.Bind(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationProxySvrMessage)
+		http.SetOperation(ctx, OperationBaseMsgSvrMessage)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
 			return srv.Message(ctx, req.(*MessageReq))
 		})
@@ -73,24 +73,24 @@ func _ProxySvr_Message0_HTTP_Handler(srv ProxySvrHTTPServer) func(ctx http.Conte
 	}
 }
 
-type ProxySvrHTTPClient interface {
+type BaseMsgSvrHTTPClient interface {
 	CheckSignature(ctx context.Context, req *CheckSignatureReq, opts ...http.CallOption) (rsp *CheckSignatureRsp, err error)
 	Message(ctx context.Context, req *MessageReq, opts ...http.CallOption) (rsp *MessageRsp, err error)
 }
 
-type ProxySvrHTTPClientImpl struct {
+type BaseMsgSvrHTTPClientImpl struct {
 	cc *http.Client
 }
 
-func NewProxySvrHTTPClient(client *http.Client) ProxySvrHTTPClient {
-	return &ProxySvrHTTPClientImpl{client}
+func NewBaseMsgSvrHTTPClient(client *http.Client) BaseMsgSvrHTTPClient {
+	return &BaseMsgSvrHTTPClientImpl{client}
 }
 
-func (c *ProxySvrHTTPClientImpl) CheckSignature(ctx context.Context, in *CheckSignatureReq, opts ...http.CallOption) (*CheckSignatureRsp, error) {
+func (c *BaseMsgSvrHTTPClientImpl) CheckSignature(ctx context.Context, in *CheckSignatureReq, opts ...http.CallOption) (*CheckSignatureRsp, error) {
 	var out CheckSignatureRsp
-	pattern := "/woa.proxysvr/message"
+	pattern := "/woa.base_msg_svr/message"
 	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation(OperationProxySvrCheckSignature))
+	opts = append(opts, http.Operation(OperationBaseMsgSvrCheckSignature))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out.Echostr, opts...)
 	if err != nil {
@@ -99,11 +99,11 @@ func (c *ProxySvrHTTPClientImpl) CheckSignature(ctx context.Context, in *CheckSi
 	return &out, err
 }
 
-func (c *ProxySvrHTTPClientImpl) Message(ctx context.Context, in *MessageReq, opts ...http.CallOption) (*MessageRsp, error) {
+func (c *BaseMsgSvrHTTPClientImpl) Message(ctx context.Context, in *MessageReq, opts ...http.CallOption) (*MessageRsp, error) {
 	var out MessageRsp
-	pattern := "/woa.proxysvr/message"
+	pattern := "/woa.base_msg_svr/message"
 	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation(OperationProxySvrMessage))
+	opts = append(opts, http.Operation(OperationBaseMsgSvrMessage))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {
