@@ -857,3 +857,443 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = ContentValidationError{}
+
+// Validate checks the field values on GetAccessTokenRsp with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// first error encountered is returned, or nil if there are no violations.
+func (m *GetAccessTokenRsp) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GetAccessTokenRsp with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// GetAccessTokenRspMultiError, or nil if none found.
+func (m *GetAccessTokenRsp) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GetAccessTokenRsp) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for AccessToken
+
+	// no validation rules for ExpireIn
+
+	if len(errors) > 0 {
+		return GetAccessTokenRspMultiError(errors)
+	}
+
+	return nil
+}
+
+// GetAccessTokenRspMultiError is an error wrapping multiple validation errors
+// returned by GetAccessTokenRsp.ValidateAll() if the designated constraints
+// aren't met.
+type GetAccessTokenRspMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GetAccessTokenRspMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GetAccessTokenRspMultiError) AllErrors() []error { return m }
+
+// GetAccessTokenRspValidationError is the validation error returned by
+// GetAccessTokenRsp.Validate if the designated constraints aren't met.
+type GetAccessTokenRspValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetAccessTokenRspValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetAccessTokenRspValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetAccessTokenRspValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetAccessTokenRspValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetAccessTokenRspValidationError) ErrorName() string {
+	return "GetAccessTokenRspValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetAccessTokenRspValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetAccessTokenRsp.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetAccessTokenRspValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetAccessTokenRspValidationError{}
+
+// Validate checks the field values on SendKefuMsgReq with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *SendKefuMsgReq) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on SendKefuMsgReq with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in SendKefuMsgReqMultiError,
+// or nil if none found.
+func (m *SendKefuMsgReq) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *SendKefuMsgReq) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Touser
+
+	// no validation rules for Msgtype
+
+	if all {
+		switch v := interface{}(m.GetText()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, SendKefuMsgReqValidationError{
+					field:  "Text",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, SendKefuMsgReqValidationError{
+					field:  "Text",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetText()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return SendKefuMsgReqValidationError{
+				field:  "Text",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return SendKefuMsgReqMultiError(errors)
+	}
+
+	return nil
+}
+
+// SendKefuMsgReqMultiError is an error wrapping multiple validation errors
+// returned by SendKefuMsgReq.ValidateAll() if the designated constraints
+// aren't met.
+type SendKefuMsgReqMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m SendKefuMsgReqMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m SendKefuMsgReqMultiError) AllErrors() []error { return m }
+
+// SendKefuMsgReqValidationError is the validation error returned by
+// SendKefuMsgReq.Validate if the designated constraints aren't met.
+type SendKefuMsgReqValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e SendKefuMsgReqValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e SendKefuMsgReqValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e SendKefuMsgReqValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e SendKefuMsgReqValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e SendKefuMsgReqValidationError) ErrorName() string { return "SendKefuMsgReqValidationError" }
+
+// Error satisfies the builtin error interface
+func (e SendKefuMsgReqValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sSendKefuMsgReq.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = SendKefuMsgReqValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = SendKefuMsgReqValidationError{}
+
+// Validate checks the field values on KefuTextMsg with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *KefuTextMsg) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on KefuTextMsg with the rules defined in
+// the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in KefuTextMsgMultiError, or
+// nil if none found.
+func (m *KefuTextMsg) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *KefuTextMsg) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Content
+
+	if len(errors) > 0 {
+		return KefuTextMsgMultiError(errors)
+	}
+
+	return nil
+}
+
+// KefuTextMsgMultiError is an error wrapping multiple validation errors
+// returned by KefuTextMsg.ValidateAll() if the designated constraints aren't met.
+type KefuTextMsgMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m KefuTextMsgMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m KefuTextMsgMultiError) AllErrors() []error { return m }
+
+// KefuTextMsgValidationError is the validation error returned by
+// KefuTextMsg.Validate if the designated constraints aren't met.
+type KefuTextMsgValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e KefuTextMsgValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e KefuTextMsgValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e KefuTextMsgValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e KefuTextMsgValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e KefuTextMsgValidationError) ErrorName() string { return "KefuTextMsgValidationError" }
+
+// Error satisfies the builtin error interface
+func (e KefuTextMsgValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sKefuTextMsg.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = KefuTextMsgValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = KefuTextMsgValidationError{}
+
+// Validate checks the field values on SendKefuMsgRsp with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *SendKefuMsgRsp) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on SendKefuMsgRsp with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in SendKefuMsgRspMultiError,
+// or nil if none found.
+func (m *SendKefuMsgRsp) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *SendKefuMsgRsp) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(errors) > 0 {
+		return SendKefuMsgRspMultiError(errors)
+	}
+
+	return nil
+}
+
+// SendKefuMsgRspMultiError is an error wrapping multiple validation errors
+// returned by SendKefuMsgRsp.ValidateAll() if the designated constraints
+// aren't met.
+type SendKefuMsgRspMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m SendKefuMsgRspMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m SendKefuMsgRspMultiError) AllErrors() []error { return m }
+
+// SendKefuMsgRspValidationError is the validation error returned by
+// SendKefuMsgRsp.Validate if the designated constraints aren't met.
+type SendKefuMsgRspValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e SendKefuMsgRspValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e SendKefuMsgRspValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e SendKefuMsgRspValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e SendKefuMsgRspValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e SendKefuMsgRspValidationError) ErrorName() string { return "SendKefuMsgRspValidationError" }
+
+// Error satisfies the builtin error interface
+func (e SendKefuMsgRspValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sSendKefuMsgRsp.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = SendKefuMsgRspValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = SendKefuMsgRspValidationError{}

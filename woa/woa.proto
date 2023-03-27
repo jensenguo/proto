@@ -75,3 +75,22 @@ message FromUserName {
 message Content {
   string content = 1 [(gogoproto.moretags) = 'xml:",cdata"'];
 }
+
+message GetAccessTokenRsp {
+  string access_token = 1;
+  int64 expire_in = 2;
+}
+
+message SendKefuMsgReq {
+  string touser = 1;
+  string msgtype = 2;
+  KefuTextMsg text = 3;
+}
+
+message KefuTextMsg {
+  string content = 1;
+}
+
+message SendKefuMsgRsp {
+}
+
