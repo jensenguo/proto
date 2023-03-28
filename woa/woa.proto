@@ -76,11 +76,20 @@ message Content {
   string content = 1 [(gogoproto.moretags) = 'xml:",cdata"'];
 }
 
-message GetAccessTokenRsp {
+// 获取稳定的access token
+message GetStableAccessTokenReq {
+  string grant_type = 1;
+  string appid = 2;
+  string secret = 3;
+  bool force_refresh = 4;
+}
+
+message GetStableAccessTokenRsp {
   string access_token = 1;
   int64 expire_in = 2;
 }
 
+// 发送客服消息
 message SendKefuMsgReq {
   string touser = 1;
   string msgtype = 2;
@@ -93,4 +102,3 @@ message KefuTextMsg {
 
 message SendKefuMsgRsp {
 }
-

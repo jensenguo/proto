@@ -858,46 +858,50 @@ var _ interface {
 	ErrorName() string
 } = ContentValidationError{}
 
-// Validate checks the field values on GetAccessTokenRsp with the rules defined
-// in the proto definition for this message. If any rules are violated, the
-// first error encountered is returned, or nil if there are no violations.
-func (m *GetAccessTokenRsp) Validate() error {
+// Validate checks the field values on GetStableAccessTokenReq with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *GetStableAccessTokenReq) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on GetAccessTokenRsp with the rules
-// defined in the proto definition for this message. If any rules are
+// ValidateAll checks the field values on GetStableAccessTokenReq with the
+// rules defined in the proto definition for this message. If any rules are
 // violated, the result is a list of violation errors wrapped in
-// GetAccessTokenRspMultiError, or nil if none found.
-func (m *GetAccessTokenRsp) ValidateAll() error {
+// GetStableAccessTokenReqMultiError, or nil if none found.
+func (m *GetStableAccessTokenReq) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *GetAccessTokenRsp) validate(all bool) error {
+func (m *GetStableAccessTokenReq) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
 
 	var errors []error
 
-	// no validation rules for AccessToken
+	// no validation rules for GrantType
 
-	// no validation rules for ExpireIn
+	// no validation rules for Appid
+
+	// no validation rules for Secret
+
+	// no validation rules for ForceRefresh
 
 	if len(errors) > 0 {
-		return GetAccessTokenRspMultiError(errors)
+		return GetStableAccessTokenReqMultiError(errors)
 	}
 
 	return nil
 }
 
-// GetAccessTokenRspMultiError is an error wrapping multiple validation errors
-// returned by GetAccessTokenRsp.ValidateAll() if the designated constraints
-// aren't met.
-type GetAccessTokenRspMultiError []error
+// GetStableAccessTokenReqMultiError is an error wrapping multiple validation
+// errors returned by GetStableAccessTokenReq.ValidateAll() if the designated
+// constraints aren't met.
+type GetStableAccessTokenReqMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m GetAccessTokenRspMultiError) Error() string {
+func (m GetStableAccessTokenReqMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -906,11 +910,11 @@ func (m GetAccessTokenRspMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m GetAccessTokenRspMultiError) AllErrors() []error { return m }
+func (m GetStableAccessTokenReqMultiError) AllErrors() []error { return m }
 
-// GetAccessTokenRspValidationError is the validation error returned by
-// GetAccessTokenRsp.Validate if the designated constraints aren't met.
-type GetAccessTokenRspValidationError struct {
+// GetStableAccessTokenReqValidationError is the validation error returned by
+// GetStableAccessTokenReq.Validate if the designated constraints aren't met.
+type GetStableAccessTokenReqValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -918,24 +922,24 @@ type GetAccessTokenRspValidationError struct {
 }
 
 // Field function returns field value.
-func (e GetAccessTokenRspValidationError) Field() string { return e.field }
+func (e GetStableAccessTokenReqValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e GetAccessTokenRspValidationError) Reason() string { return e.reason }
+func (e GetStableAccessTokenReqValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e GetAccessTokenRspValidationError) Cause() error { return e.cause }
+func (e GetStableAccessTokenReqValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e GetAccessTokenRspValidationError) Key() bool { return e.key }
+func (e GetStableAccessTokenReqValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e GetAccessTokenRspValidationError) ErrorName() string {
-	return "GetAccessTokenRspValidationError"
+func (e GetStableAccessTokenReqValidationError) ErrorName() string {
+	return "GetStableAccessTokenReqValidationError"
 }
 
 // Error satisfies the builtin error interface
-func (e GetAccessTokenRspValidationError) Error() string {
+func (e GetStableAccessTokenReqValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -947,14 +951,14 @@ func (e GetAccessTokenRspValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sGetAccessTokenRsp.%s: %s%s",
+		"invalid %sGetStableAccessTokenReq.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = GetAccessTokenRspValidationError{}
+var _ error = GetStableAccessTokenReqValidationError{}
 
 var _ interface {
 	Field() string
@@ -962,7 +966,113 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = GetAccessTokenRspValidationError{}
+} = GetStableAccessTokenReqValidationError{}
+
+// Validate checks the field values on GetStableAccessTokenRsp with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *GetStableAccessTokenRsp) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GetStableAccessTokenRsp with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// GetStableAccessTokenRspMultiError, or nil if none found.
+func (m *GetStableAccessTokenRsp) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GetStableAccessTokenRsp) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for AccessToken
+
+	// no validation rules for ExpireIn
+
+	if len(errors) > 0 {
+		return GetStableAccessTokenRspMultiError(errors)
+	}
+
+	return nil
+}
+
+// GetStableAccessTokenRspMultiError is an error wrapping multiple validation
+// errors returned by GetStableAccessTokenRsp.ValidateAll() if the designated
+// constraints aren't met.
+type GetStableAccessTokenRspMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GetStableAccessTokenRspMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GetStableAccessTokenRspMultiError) AllErrors() []error { return m }
+
+// GetStableAccessTokenRspValidationError is the validation error returned by
+// GetStableAccessTokenRsp.Validate if the designated constraints aren't met.
+type GetStableAccessTokenRspValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetStableAccessTokenRspValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetStableAccessTokenRspValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetStableAccessTokenRspValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetStableAccessTokenRspValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetStableAccessTokenRspValidationError) ErrorName() string {
+	return "GetStableAccessTokenRspValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetStableAccessTokenRspValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetStableAccessTokenRsp.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetStableAccessTokenRspValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetStableAccessTokenRspValidationError{}
 
 // Validate checks the field values on SendKefuMsgReq with the rules defined in
 // the proto definition for this message. If any rules are violated, the first
