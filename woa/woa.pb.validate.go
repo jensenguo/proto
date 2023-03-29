@@ -1129,6 +1129,35 @@ func (m *SendKefuMsgReq) validate(all bool) error {
 		}
 	}
 
+	if all {
+		switch v := interface{}(m.GetImage()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, SendKefuMsgReqValidationError{
+					field:  "Image",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, SendKefuMsgReqValidationError{
+					field:  "Image",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetImage()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return SendKefuMsgReqValidationError{
+				field:  "Image",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
 	if len(errors) > 0 {
 		return SendKefuMsgReqMultiError(errors)
 	}
@@ -1308,6 +1337,107 @@ var _ interface {
 	ErrorName() string
 } = KefuTextMsgValidationError{}
 
+// Validate checks the field values on KefuImageMsg with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *KefuImageMsg) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on KefuImageMsg with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in KefuImageMsgMultiError, or
+// nil if none found.
+func (m *KefuImageMsg) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *KefuImageMsg) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for MediaId
+
+	if len(errors) > 0 {
+		return KefuImageMsgMultiError(errors)
+	}
+
+	return nil
+}
+
+// KefuImageMsgMultiError is an error wrapping multiple validation errors
+// returned by KefuImageMsg.ValidateAll() if the designated constraints aren't met.
+type KefuImageMsgMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m KefuImageMsgMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m KefuImageMsgMultiError) AllErrors() []error { return m }
+
+// KefuImageMsgValidationError is the validation error returned by
+// KefuImageMsg.Validate if the designated constraints aren't met.
+type KefuImageMsgValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e KefuImageMsgValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e KefuImageMsgValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e KefuImageMsgValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e KefuImageMsgValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e KefuImageMsgValidationError) ErrorName() string { return "KefuImageMsgValidationError" }
+
+// Error satisfies the builtin error interface
+func (e KefuImageMsgValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sKefuImageMsg.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = KefuImageMsgValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = KefuImageMsgValidationError{}
+
 // Validate checks the field values on SendKefuMsgRsp with the rules defined in
 // the proto definition for this message. If any rules are violated, the first
 // error encountered is returned, or nil if there are no violations.
@@ -1407,3 +1537,111 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = SendKefuMsgRspValidationError{}
+
+// Validate checks the field values on UploadImageMsgRsp with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// first error encountered is returned, or nil if there are no violations.
+func (m *UploadImageMsgRsp) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on UploadImageMsgRsp with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// UploadImageMsgRspMultiError, or nil if none found.
+func (m *UploadImageMsgRsp) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *UploadImageMsgRsp) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Type
+
+	// no validation rules for MediaId
+
+	// no validation rules for CreatedAt
+
+	if len(errors) > 0 {
+		return UploadImageMsgRspMultiError(errors)
+	}
+
+	return nil
+}
+
+// UploadImageMsgRspMultiError is an error wrapping multiple validation errors
+// returned by UploadImageMsgRsp.ValidateAll() if the designated constraints
+// aren't met.
+type UploadImageMsgRspMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m UploadImageMsgRspMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m UploadImageMsgRspMultiError) AllErrors() []error { return m }
+
+// UploadImageMsgRspValidationError is the validation error returned by
+// UploadImageMsgRsp.Validate if the designated constraints aren't met.
+type UploadImageMsgRspValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e UploadImageMsgRspValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e UploadImageMsgRspValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e UploadImageMsgRspValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e UploadImageMsgRspValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e UploadImageMsgRspValidationError) ErrorName() string {
+	return "UploadImageMsgRspValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e UploadImageMsgRspValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sUploadImageMsgRsp.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = UploadImageMsgRspValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = UploadImageMsgRspValidationError{}

@@ -89,16 +89,28 @@ message GetStableAccessTokenRsp {
   int64 expire_in = 2;
 }
 
-// 发送客服消息
+// 发送文本消息
 message SendKefuMsgReq {
   string touser = 1;
   string msgtype = 2;
   KefuTextMsg text = 3;
+  KefuImageMsg image = 4;
 }
 
 message KefuTextMsg {
   string content = 1;
 }
 
+message KefuImageMsg {
+  string media_id = 1;
+}
+
 message SendKefuMsgRsp {
+}
+
+// 上传图片消息
+message UploadImageMsgRsp {
+  string type = 1;
+  string media_id = 2;
+  int64 created_at = 3;
 }
