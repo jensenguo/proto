@@ -114,3 +114,14 @@ message UploadImageMsgRsp {
   string media_id = 2;
   int64 created_at = 3;
 }
+
+// 发送客服输入状态
+message SendTypeStatusReq {
+  string touser = 1;
+  string command = 2;
+}
+
+message SendTypeStatusRsp {
+  int64 errcode = 1;
+  string errmsg = 2;
+}

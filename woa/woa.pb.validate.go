@@ -1645,3 +1645,215 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = UploadImageMsgRspValidationError{}
+
+// Validate checks the field values on SendTypeStatusReq with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// first error encountered is returned, or nil if there are no violations.
+func (m *SendTypeStatusReq) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on SendTypeStatusReq with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// SendTypeStatusReqMultiError, or nil if none found.
+func (m *SendTypeStatusReq) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *SendTypeStatusReq) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Touser
+
+	// no validation rules for Command
+
+	if len(errors) > 0 {
+		return SendTypeStatusReqMultiError(errors)
+	}
+
+	return nil
+}
+
+// SendTypeStatusReqMultiError is an error wrapping multiple validation errors
+// returned by SendTypeStatusReq.ValidateAll() if the designated constraints
+// aren't met.
+type SendTypeStatusReqMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m SendTypeStatusReqMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m SendTypeStatusReqMultiError) AllErrors() []error { return m }
+
+// SendTypeStatusReqValidationError is the validation error returned by
+// SendTypeStatusReq.Validate if the designated constraints aren't met.
+type SendTypeStatusReqValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e SendTypeStatusReqValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e SendTypeStatusReqValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e SendTypeStatusReqValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e SendTypeStatusReqValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e SendTypeStatusReqValidationError) ErrorName() string {
+	return "SendTypeStatusReqValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e SendTypeStatusReqValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sSendTypeStatusReq.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = SendTypeStatusReqValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = SendTypeStatusReqValidationError{}
+
+// Validate checks the field values on SendTypeStatusRsp with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// first error encountered is returned, or nil if there are no violations.
+func (m *SendTypeStatusRsp) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on SendTypeStatusRsp with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// SendTypeStatusRspMultiError, or nil if none found.
+func (m *SendTypeStatusRsp) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *SendTypeStatusRsp) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Errcode
+
+	// no validation rules for Errmsg
+
+	if len(errors) > 0 {
+		return SendTypeStatusRspMultiError(errors)
+	}
+
+	return nil
+}
+
+// SendTypeStatusRspMultiError is an error wrapping multiple validation errors
+// returned by SendTypeStatusRsp.ValidateAll() if the designated constraints
+// aren't met.
+type SendTypeStatusRspMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m SendTypeStatusRspMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m SendTypeStatusRspMultiError) AllErrors() []error { return m }
+
+// SendTypeStatusRspValidationError is the validation error returned by
+// SendTypeStatusRsp.Validate if the designated constraints aren't met.
+type SendTypeStatusRspValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e SendTypeStatusRspValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e SendTypeStatusRspValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e SendTypeStatusRspValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e SendTypeStatusRspValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e SendTypeStatusRspValidationError) ErrorName() string {
+	return "SendTypeStatusRspValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e SendTypeStatusRspValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sSendTypeStatusRsp.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = SendTypeStatusRspValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = SendTypeStatusRspValidationError{}
