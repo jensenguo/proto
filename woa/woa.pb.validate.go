@@ -281,6 +281,8 @@ func (m *MessageReq) validate(all bool) error {
 
 	// no validation rules for Content
 
+	// no validation rules for Recognition
+
 	// no validation rules for MsgId
 
 	// no validation rules for MsgDataId

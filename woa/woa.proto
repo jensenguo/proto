@@ -48,10 +48,11 @@ message MessageReq {
   string from_user_name = 2; 
   int64 create_time = 3;
   string msg_type = 4;
-  string content = 6;
+  string content = 5;
+  string recognition = 6;
   int64 msg_id = 7;
   int64 msg_data_id = 8;
-  int64 idx = 9 ;
+  int64 idx = 9;
 }
 
 // MessageRsp 接受普通消息接口回包
