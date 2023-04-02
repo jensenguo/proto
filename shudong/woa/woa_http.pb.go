@@ -31,8 +31,8 @@ type BaseMsgSvrHTTPServer interface {
 
 func RegisterBaseMsgSvrHTTPServer(s *http.Server, srv BaseMsgSvrHTTPServer) {
 	r := s.Route("/")
-	r.GET("/woa.base_msg_svr/message", _BaseMsgSvr_CheckSignature0_HTTP_Handler(srv))
-	r.POST("/woa.base_msg_svr/message", _BaseMsgSvr_Message0_HTTP_Handler(srv))
+	r.GET("/shudong/woa/base_msg_svr/message", _BaseMsgSvr_CheckSignature0_HTTP_Handler(srv))
+	r.POST("/shudong/woa/base_msg_svr/message", _BaseMsgSvr_Message0_HTTP_Handler(srv))
 }
 
 func _BaseMsgSvr_CheckSignature0_HTTP_Handler(srv BaseMsgSvrHTTPServer) func(ctx http.Context) error {
@@ -88,7 +88,7 @@ func NewBaseMsgSvrHTTPClient(client *http.Client) BaseMsgSvrHTTPClient {
 
 func (c *BaseMsgSvrHTTPClientImpl) CheckSignature(ctx context.Context, in *CheckSignatureReq, opts ...http.CallOption) (*CheckSignatureRsp, error) {
 	var out CheckSignatureRsp
-	pattern := "/woa.base_msg_svr/message"
+	pattern := "/shudong/woa/base_msg_svr/message"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation(OperationBaseMsgSvrCheckSignature))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -101,7 +101,7 @@ func (c *BaseMsgSvrHTTPClientImpl) CheckSignature(ctx context.Context, in *Check
 
 func (c *BaseMsgSvrHTTPClientImpl) Message(ctx context.Context, in *MessageReq, opts ...http.CallOption) (*MessageRsp, error) {
 	var out MessageRsp
-	pattern := "/woa.base_msg_svr/message"
+	pattern := "/shudong/woa/base_msg_svr/message"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationBaseMsgSvrMessage))
 	opts = append(opts, http.PathTemplate(pattern))

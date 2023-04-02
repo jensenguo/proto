@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package woa;
 
-option go_package = "github.com/jensenguo/proto/woa";
+option go_package = "github.com/jensenguo/proto/shudong/woa";
 
 import "google/api/annotations.proto";
 
@@ -16,18 +16,20 @@ service BaseMsgSvr {
   // CheckSignature 签名校验接口
   rpc CheckSignature (CheckSignatureReq) returns (CheckSignatureRsp) {
     option (google.api.http) = {
-        get: "/woa.base_msg_svr/message"
+        get: "/shudong/woa/base_msg_svr/message"
         response_body: "echostr"
     };
   }
   // Message 微信公众号消息回调接口（所有微信公众号消息使用这个接口）
   rpc Message (MessageReq) returns (MessageRsp) {
     option (google.api.http) = {
-        post: "/woa.base_msg_svr/message"
+        post: "/shudong/woa/base_msg_svr/message"
         body: "*"
     };
   }
 }
+
+/***************************基础消息服务*************************************/
 
 // CheckSignatureReq 签名校验接口请求
 message CheckSignatureReq {
@@ -76,6 +78,8 @@ message FromUserName {
 message Content {
   string content = 1 [(gogoproto.moretags) = 'xml:",cdata"'];
 }
+
+/***************************其他内部使用协议*************************************/
 
 // 获取稳定的access token
 message GetStableAccessTokenReq {
