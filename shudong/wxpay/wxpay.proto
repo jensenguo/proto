@@ -18,14 +18,21 @@ service WexinPaySvr {
     option (google.api.http) = {
       post: "/shudong/wxpay/weixin_pay_svr/transactions"
       body: "*"
-  };
+    };
   }
   // PayCallback 交易结果回调
   rpc PayCallback (PayCallbackReq) returns (PayCallbackRsp) {
     option (google.api.http) = {
       post: "/shudong/wxpay/weixin_pay_svr/pay_callback"
       body: "*"
-  };
+    };
+  }
+  // GetUserOpenid 获取用户openid接口
+  rpc GetUserOpenid (GetUserOpenidReq) returns (GetUserOpenidRsp) {
+    option (google.api.http) = {
+      post: "/shudong/wxpay/weixin_pay_svr/get_user_openid"
+      body: "*"
+    };
   }
 }
 
@@ -60,4 +67,23 @@ message PayCallbackReq {
 message PayCallbackRsp {
   string code = 1;
   string message = 2;
+}
+
+ // 获取用户openid接口
+message GetUserOpenidReq {
+  string code = 1;
+}
+
+message GetUserOpenidRsp {
+  string openid = 1;
+}
+
+/**************************其他接口协议*****************************/
+message GetAccessTokenRsp {
+  string access_token = 1;
+  int64 expires_in = 2;
+  string refresh_token = 3;
+  string openid = 4;
+  string scope = 5;
+  string unionid = 6;
 }

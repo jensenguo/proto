@@ -19,10 +19,13 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
+const OperationWexinPaySvrGetUserOpenid = "/wxpay.WexinPaySvr/GetUserOpenid"
 const OperationWexinPaySvrPayCallback = "/wxpay.WexinPaySvr/PayCallback"
 const OperationWexinPaySvrTransactions = "/wxpay.WexinPaySvr/Transactions"
 
 type WexinPaySvrHTTPServer interface {
+	// GetUserOpenid GetUserOpenid 获取用户openid接口
+	GetUserOpenid(context.Context, *GetUserOpenidReq) (*GetUserOpenidRsp, error)
 	// PayCallback PayCallback 交易结果回调
 	PayCallback(context.Context, *PayCallbackReq) (*PayCallbackRsp, error)
 	// Transactions Transactions 交易接口
@@ -33,6 +36,7 @@ func RegisterWexinPaySvrHTTPServer(s *http.Server, srv WexinPaySvrHTTPServer) {
 	r := s.Route("/")
 	r.POST("/shudong/wxpay/weixin_pay_svr/transactions", _WexinPaySvr_Transactions0_HTTP_Handler(srv))
 	r.POST("/shudong/wxpay/weixin_pay_svr/pay_callback", _WexinPaySvr_PayCallback0_HTTP_Handler(srv))
+	r.POST("/shudong/wxpay/weixin_pay_svr/get_user_openid", _WexinPaySvr_GetUserOpenid0_HTTP_Handler(srv))
 }
 
 func _WexinPaySvr_Transactions0_HTTP_Handler(srv WexinPaySvrHTTPServer) func(ctx http.Context) error {
@@ -73,7 +77,27 @@ func _WexinPaySvr_PayCallback0_HTTP_Handler(srv WexinPaySvrHTTPServer) func(ctx 
 	}
 }
 
+func _WexinPaySvr_GetUserOpenid0_HTTP_Handler(srv WexinPaySvrHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in GetUserOpenidReq
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationWexinPaySvrGetUserOpenid)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.GetUserOpenid(ctx, req.(*GetUserOpenidReq))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*GetUserOpenidRsp)
+		return ctx.Result(200, reply)
+	}
+}
+
 type WexinPaySvrHTTPClient interface {
+	GetUserOpenid(ctx context.Context, req *GetUserOpenidReq, opts ...http.CallOption) (rsp *GetUserOpenidRsp, err error)
 	PayCallback(ctx context.Context, req *PayCallbackReq, opts ...http.CallOption) (rsp *PayCallbackRsp, err error)
 	Transactions(ctx context.Context, req *TransactionsReq, opts ...http.CallOption) (rsp *TransactionsRsp, err error)
 }
@@ -84,6 +108,19 @@ type WexinPaySvrHTTPClientImpl struct {
 
 func NewWexinPaySvrHTTPClient(client *http.Client) WexinPaySvrHTTPClient {
 	return &WexinPaySvrHTTPClientImpl{client}
+}
+
+func (c *WexinPaySvrHTTPClientImpl) GetUserOpenid(ctx context.Context, in *GetUserOpenidReq, opts ...http.CallOption) (*GetUserOpenidRsp, error) {
+	var out GetUserOpenidRsp
+	pattern := "/shudong/wxpay/weixin_pay_svr/get_user_openid"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation(OperationWexinPaySvrGetUserOpenid))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
 }
 
 func (c *WexinPaySvrHTTPClientImpl) PayCallback(ctx context.Context, in *PayCallbackReq, opts ...http.CallOption) (*PayCallbackRsp, error) {

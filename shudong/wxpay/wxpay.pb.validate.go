@@ -456,3 +456,321 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = PayCallbackRspValidationError{}
+
+// Validate checks the field values on GetUserOpenidReq with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// first error encountered is returned, or nil if there are no violations.
+func (m *GetUserOpenidReq) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GetUserOpenidReq with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// GetUserOpenidReqMultiError, or nil if none found.
+func (m *GetUserOpenidReq) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GetUserOpenidReq) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Code
+
+	if len(errors) > 0 {
+		return GetUserOpenidReqMultiError(errors)
+	}
+
+	return nil
+}
+
+// GetUserOpenidReqMultiError is an error wrapping multiple validation errors
+// returned by GetUserOpenidReq.ValidateAll() if the designated constraints
+// aren't met.
+type GetUserOpenidReqMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GetUserOpenidReqMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GetUserOpenidReqMultiError) AllErrors() []error { return m }
+
+// GetUserOpenidReqValidationError is the validation error returned by
+// GetUserOpenidReq.Validate if the designated constraints aren't met.
+type GetUserOpenidReqValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetUserOpenidReqValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetUserOpenidReqValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetUserOpenidReqValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetUserOpenidReqValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetUserOpenidReqValidationError) ErrorName() string { return "GetUserOpenidReqValidationError" }
+
+// Error satisfies the builtin error interface
+func (e GetUserOpenidReqValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetUserOpenidReq.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetUserOpenidReqValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetUserOpenidReqValidationError{}
+
+// Validate checks the field values on GetUserOpenidRsp with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// first error encountered is returned, or nil if there are no violations.
+func (m *GetUserOpenidRsp) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GetUserOpenidRsp with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// GetUserOpenidRspMultiError, or nil if none found.
+func (m *GetUserOpenidRsp) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GetUserOpenidRsp) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Openid
+
+	if len(errors) > 0 {
+		return GetUserOpenidRspMultiError(errors)
+	}
+
+	return nil
+}
+
+// GetUserOpenidRspMultiError is an error wrapping multiple validation errors
+// returned by GetUserOpenidRsp.ValidateAll() if the designated constraints
+// aren't met.
+type GetUserOpenidRspMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GetUserOpenidRspMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GetUserOpenidRspMultiError) AllErrors() []error { return m }
+
+// GetUserOpenidRspValidationError is the validation error returned by
+// GetUserOpenidRsp.Validate if the designated constraints aren't met.
+type GetUserOpenidRspValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetUserOpenidRspValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetUserOpenidRspValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetUserOpenidRspValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetUserOpenidRspValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetUserOpenidRspValidationError) ErrorName() string { return "GetUserOpenidRspValidationError" }
+
+// Error satisfies the builtin error interface
+func (e GetUserOpenidRspValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetUserOpenidRsp.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetUserOpenidRspValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetUserOpenidRspValidationError{}
+
+// Validate checks the field values on GetAccessTokenRsp with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// first error encountered is returned, or nil if there are no violations.
+func (m *GetAccessTokenRsp) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GetAccessTokenRsp with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// GetAccessTokenRspMultiError, or nil if none found.
+func (m *GetAccessTokenRsp) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GetAccessTokenRsp) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for AccessToken
+
+	// no validation rules for ExpiresIn
+
+	// no validation rules for RefreshToken
+
+	// no validation rules for Openid
+
+	// no validation rules for Scope
+
+	// no validation rules for Unionid
+
+	if len(errors) > 0 {
+		return GetAccessTokenRspMultiError(errors)
+	}
+
+	return nil
+}
+
+// GetAccessTokenRspMultiError is an error wrapping multiple validation errors
+// returned by GetAccessTokenRsp.ValidateAll() if the designated constraints
+// aren't met.
+type GetAccessTokenRspMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GetAccessTokenRspMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GetAccessTokenRspMultiError) AllErrors() []error { return m }
+
+// GetAccessTokenRspValidationError is the validation error returned by
+// GetAccessTokenRsp.Validate if the designated constraints aren't met.
+type GetAccessTokenRspValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetAccessTokenRspValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetAccessTokenRspValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetAccessTokenRspValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetAccessTokenRspValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetAccessTokenRspValidationError) ErrorName() string {
+	return "GetAccessTokenRspValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetAccessTokenRspValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetAccessTokenRsp.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetAccessTokenRspValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetAccessTokenRspValidationError{}
