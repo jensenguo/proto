@@ -28,6 +28,8 @@ type WexinPaySvrClient interface {
 	PayCallback(ctx context.Context, in *PayCallbackReq, opts ...grpc.CallOption) (*PayCallbackRsp, error)
 	// GetUserOpenid 获取用户openid接口
 	GetUserOpenid(ctx context.Context, in *GetUserOpenidReq, opts ...grpc.CallOption) (*GetUserOpenidRsp, error)
+	// GetUserVip 获取用户vip信息接口
+	GetUserVip(ctx context.Context, in *GetUserVipReq, opts ...grpc.CallOption) (*GetUserVipRsp, error)
 }
 
 type wexinPaySvrClient struct {
@@ -65,6 +67,15 @@ func (c *wexinPaySvrClient) GetUserOpenid(ctx context.Context, in *GetUserOpenid
 	return out, nil
 }
 
+func (c *wexinPaySvrClient) GetUserVip(ctx context.Context, in *GetUserVipReq, opts ...grpc.CallOption) (*GetUserVipRsp, error) {
+	out := new(GetUserVipRsp)
+	err := c.cc.Invoke(ctx, "/wxpay.WexinPaySvr/GetUserVip", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // WexinPaySvrServer is the server API for WexinPaySvr service.
 // All implementations must embed UnimplementedWexinPaySvrServer
 // for forward compatibility
@@ -75,6 +86,8 @@ type WexinPaySvrServer interface {
 	PayCallback(context.Context, *PayCallbackReq) (*PayCallbackRsp, error)
 	// GetUserOpenid 获取用户openid接口
 	GetUserOpenid(context.Context, *GetUserOpenidReq) (*GetUserOpenidRsp, error)
+	// GetUserVip 获取用户vip信息接口
+	GetUserVip(context.Context, *GetUserVipReq) (*GetUserVipRsp, error)
 	mustEmbedUnimplementedWexinPaySvrServer()
 }
 
@@ -90,6 +103,9 @@ func (UnimplementedWexinPaySvrServer) PayCallback(context.Context, *PayCallbackR
 }
 func (UnimplementedWexinPaySvrServer) GetUserOpenid(context.Context, *GetUserOpenidReq) (*GetUserOpenidRsp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserOpenid not implemented")
+}
+func (UnimplementedWexinPaySvrServer) GetUserVip(context.Context, *GetUserVipReq) (*GetUserVipRsp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserVip not implemented")
 }
 func (UnimplementedWexinPaySvrServer) mustEmbedUnimplementedWexinPaySvrServer() {}
 
@@ -158,6 +174,24 @@ func _WexinPaySvr_GetUserOpenid_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _WexinPaySvr_GetUserVip_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUserVipReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(WexinPaySvrServer).GetUserVip(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/wxpay.WexinPaySvr/GetUserVip",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(WexinPaySvrServer).GetUserVip(ctx, req.(*GetUserVipReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // WexinPaySvr_ServiceDesc is the grpc.ServiceDesc for WexinPaySvr service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -176,6 +210,10 @@ var WexinPaySvr_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetUserOpenid",
 			Handler:    _WexinPaySvr_GetUserOpenid_Handler,
+		},
+		{
+			MethodName: "GetUserVip",
+			Handler:    _WexinPaySvr_GetUserVip_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

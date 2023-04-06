@@ -57,9 +57,27 @@ func (m *TransactionsReq) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for UserOpenId
+	if utf8.RuneCountInString(m.GetUserOpenid()) < 1 {
+		err := TransactionsReqValidationError{
+			field:  "UserOpenid",
+			reason: "value length must be at least 1 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
-	// no validation rules for VipType
+	if _, ok := _TransactionsReq_VipType_InLookup[m.GetVipType()]; !ok {
+		err := TransactionsReqValidationError{
+			field:  "VipType",
+			reason: "value must be in list [Hour Day Week Month Quarter Year]",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
 	if len(errors) > 0 {
 		return TransactionsReqMultiError(errors)
@@ -139,6 +157,15 @@ var _ interface {
 	ErrorName() string
 } = TransactionsReqValidationError{}
 
+var _TransactionsReq_VipType_InLookup = map[TransactionsReq_VipType]struct{}{
+	1: {},
+	2: {},
+	3: {},
+	4: {},
+	5: {},
+	6: {},
+}
+
 // Validate checks the field values on TransactionsRsp with the rules defined
 // in the proto definition for this message. If any rules are violated, the
 // first error encountered is returned, or nil if there are no violations.
@@ -162,8 +189,6 @@ func (m *TransactionsRsp) validate(all bool) error {
 	var errors []error
 
 	// no validation rules for Appid
-
-	// no validation rules for PrepayId
 
 	// no validation rules for Timestamp
 
@@ -274,45 +299,6 @@ func (m *PayCallbackReq) validate(all bool) error {
 	}
 
 	var errors []error
-
-	// no validation rules for Id
-
-	// no validation rules for CreateTime
-
-	// no validation rules for ResourceType
-
-	// no validation rules for EventType
-
-	// no validation rules for Summary
-
-	if all {
-		switch v := interface{}(m.GetResource()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, PayCallbackReqValidationError{
-					field:  "Resource",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		case interface{ Validate() error }:
-			if err := v.Validate(); err != nil {
-				errors = append(errors, PayCallbackReqValidationError{
-					field:  "Resource",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		}
-	} else if v, ok := interface{}(m.GetResource()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return PayCallbackReqValidationError{
-				field:  "Resource",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
-	}
 
 	if len(errors) > 0 {
 		return PayCallbackReqMultiError(errors)
@@ -518,7 +504,16 @@ func (m *GetUserOpenidReq) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for Code
+	if utf8.RuneCountInString(m.GetCode()) < 1 {
+		err := GetUserOpenidReqValidationError{
+			field:  "Code",
+			reason: "value length must be at least 1 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
 	if len(errors) > 0 {
 		return GetUserOpenidReqMultiError(errors)
@@ -700,6 +695,219 @@ var _ interface {
 	ErrorName() string
 } = GetUserOpenidRspValidationError{}
 
+// Validate checks the field values on GetUserVipReq with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *GetUserVipReq) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GetUserVipReq with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in GetUserVipReqMultiError, or
+// nil if none found.
+func (m *GetUserVipReq) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GetUserVipReq) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if utf8.RuneCountInString(m.GetUserOpenid()) < 1 {
+		err := GetUserVipReqValidationError{
+			field:  "UserOpenid",
+			reason: "value length must be at least 1 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if len(errors) > 0 {
+		return GetUserVipReqMultiError(errors)
+	}
+
+	return nil
+}
+
+// GetUserVipReqMultiError is an error wrapping multiple validation errors
+// returned by GetUserVipReq.ValidateAll() if the designated constraints
+// aren't met.
+type GetUserVipReqMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GetUserVipReqMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GetUserVipReqMultiError) AllErrors() []error { return m }
+
+// GetUserVipReqValidationError is the validation error returned by
+// GetUserVipReq.Validate if the designated constraints aren't met.
+type GetUserVipReqValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetUserVipReqValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetUserVipReqValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetUserVipReqValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetUserVipReqValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetUserVipReqValidationError) ErrorName() string { return "GetUserVipReqValidationError" }
+
+// Error satisfies the builtin error interface
+func (e GetUserVipReqValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetUserVipReq.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetUserVipReqValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetUserVipReqValidationError{}
+
+// Validate checks the field values on GetUserVipRsp with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *GetUserVipRsp) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GetUserVipRsp with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in GetUserVipRspMultiError, or
+// nil if none found.
+func (m *GetUserVipRsp) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GetUserVipRsp) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for ExpireTs
+
+	if len(errors) > 0 {
+		return GetUserVipRspMultiError(errors)
+	}
+
+	return nil
+}
+
+// GetUserVipRspMultiError is an error wrapping multiple validation errors
+// returned by GetUserVipRsp.ValidateAll() if the designated constraints
+// aren't met.
+type GetUserVipRspMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GetUserVipRspMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GetUserVipRspMultiError) AllErrors() []error { return m }
+
+// GetUserVipRspValidationError is the validation error returned by
+// GetUserVipRsp.Validate if the designated constraints aren't met.
+type GetUserVipRspValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetUserVipRspValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetUserVipRspValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetUserVipRspValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetUserVipRspValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetUserVipRspValidationError) ErrorName() string { return "GetUserVipRspValidationError" }
+
+// Error satisfies the builtin error interface
+func (e GetUserVipRspValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetUserVipRsp.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetUserVipRspValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetUserVipRspValidationError{}
+
 // Validate checks the field values on GetAccessTokenRsp with the rules defined
 // in the proto definition for this message. If any rules are violated, the
 // first error encountered is returned, or nil if there are no violations.
@@ -813,599 +1021,3 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = GetAccessTokenRspValidationError{}
-
-// Validate checks the field values on WxTransactionsReq with the rules defined
-// in the proto definition for this message. If any rules are violated, the
-// first error encountered is returned, or nil if there are no violations.
-func (m *WxTransactionsReq) Validate() error {
-	return m.validate(false)
-}
-
-// ValidateAll checks the field values on WxTransactionsReq with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, the result is a list of violation errors wrapped in
-// WxTransactionsReqMultiError, or nil if none found.
-func (m *WxTransactionsReq) ValidateAll() error {
-	return m.validate(true)
-}
-
-func (m *WxTransactionsReq) validate(all bool) error {
-	if m == nil {
-		return nil
-	}
-
-	var errors []error
-
-	// no validation rules for Mchid
-
-	// no validation rules for OutTradeNo
-
-	// no validation rules for Appid
-
-	// no validation rules for Description
-
-	// no validation rules for NotifyUrl
-
-	if all {
-		switch v := interface{}(m.GetAmount()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, WxTransactionsReqValidationError{
-					field:  "Amount",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		case interface{ Validate() error }:
-			if err := v.Validate(); err != nil {
-				errors = append(errors, WxTransactionsReqValidationError{
-					field:  "Amount",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		}
-	} else if v, ok := interface{}(m.GetAmount()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return WxTransactionsReqValidationError{
-				field:  "Amount",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
-	}
-
-	if all {
-		switch v := interface{}(m.GetPayer()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, WxTransactionsReqValidationError{
-					field:  "Payer",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		case interface{ Validate() error }:
-			if err := v.Validate(); err != nil {
-				errors = append(errors, WxTransactionsReqValidationError{
-					field:  "Payer",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		}
-	} else if v, ok := interface{}(m.GetPayer()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return WxTransactionsReqValidationError{
-				field:  "Payer",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
-	}
-
-	if len(errors) > 0 {
-		return WxTransactionsReqMultiError(errors)
-	}
-
-	return nil
-}
-
-// WxTransactionsReqMultiError is an error wrapping multiple validation errors
-// returned by WxTransactionsReq.ValidateAll() if the designated constraints
-// aren't met.
-type WxTransactionsReqMultiError []error
-
-// Error returns a concatenation of all the error messages it wraps.
-func (m WxTransactionsReqMultiError) Error() string {
-	var msgs []string
-	for _, err := range m {
-		msgs = append(msgs, err.Error())
-	}
-	return strings.Join(msgs, "; ")
-}
-
-// AllErrors returns a list of validation violation errors.
-func (m WxTransactionsReqMultiError) AllErrors() []error { return m }
-
-// WxTransactionsReqValidationError is the validation error returned by
-// WxTransactionsReq.Validate if the designated constraints aren't met.
-type WxTransactionsReqValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e WxTransactionsReqValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e WxTransactionsReqValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e WxTransactionsReqValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e WxTransactionsReqValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e WxTransactionsReqValidationError) ErrorName() string {
-	return "WxTransactionsReqValidationError"
-}
-
-// Error satisfies the builtin error interface
-func (e WxTransactionsReqValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sWxTransactionsReq.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = WxTransactionsReqValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = WxTransactionsReqValidationError{}
-
-// Validate checks the field values on WxTransactionsRsp with the rules defined
-// in the proto definition for this message. If any rules are violated, the
-// first error encountered is returned, or nil if there are no violations.
-func (m *WxTransactionsRsp) Validate() error {
-	return m.validate(false)
-}
-
-// ValidateAll checks the field values on WxTransactionsRsp with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, the result is a list of violation errors wrapped in
-// WxTransactionsRspMultiError, or nil if none found.
-func (m *WxTransactionsRsp) ValidateAll() error {
-	return m.validate(true)
-}
-
-func (m *WxTransactionsRsp) validate(all bool) error {
-	if m == nil {
-		return nil
-	}
-
-	var errors []error
-
-	// no validation rules for PrepayId
-
-	if len(errors) > 0 {
-		return WxTransactionsRspMultiError(errors)
-	}
-
-	return nil
-}
-
-// WxTransactionsRspMultiError is an error wrapping multiple validation errors
-// returned by WxTransactionsRsp.ValidateAll() if the designated constraints
-// aren't met.
-type WxTransactionsRspMultiError []error
-
-// Error returns a concatenation of all the error messages it wraps.
-func (m WxTransactionsRspMultiError) Error() string {
-	var msgs []string
-	for _, err := range m {
-		msgs = append(msgs, err.Error())
-	}
-	return strings.Join(msgs, "; ")
-}
-
-// AllErrors returns a list of validation violation errors.
-func (m WxTransactionsRspMultiError) AllErrors() []error { return m }
-
-// WxTransactionsRspValidationError is the validation error returned by
-// WxTransactionsRsp.Validate if the designated constraints aren't met.
-type WxTransactionsRspValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e WxTransactionsRspValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e WxTransactionsRspValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e WxTransactionsRspValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e WxTransactionsRspValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e WxTransactionsRspValidationError) ErrorName() string {
-	return "WxTransactionsRspValidationError"
-}
-
-// Error satisfies the builtin error interface
-func (e WxTransactionsRspValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sWxTransactionsRsp.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = WxTransactionsRspValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = WxTransactionsRspValidationError{}
-
-// Validate checks the field values on PayCallbackReq_Resource with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, the first error encountered is returned, or nil if there are no violations.
-func (m *PayCallbackReq_Resource) Validate() error {
-	return m.validate(false)
-}
-
-// ValidateAll checks the field values on PayCallbackReq_Resource with the
-// rules defined in the proto definition for this message. If any rules are
-// violated, the result is a list of violation errors wrapped in
-// PayCallbackReq_ResourceMultiError, or nil if none found.
-func (m *PayCallbackReq_Resource) ValidateAll() error {
-	return m.validate(true)
-}
-
-func (m *PayCallbackReq_Resource) validate(all bool) error {
-	if m == nil {
-		return nil
-	}
-
-	var errors []error
-
-	// no validation rules for OriginalType
-
-	// no validation rules for Algorithm
-
-	// no validation rules for Ciphertext
-
-	// no validation rules for AssociatedData
-
-	// no validation rules for Nonce
-
-	if len(errors) > 0 {
-		return PayCallbackReq_ResourceMultiError(errors)
-	}
-
-	return nil
-}
-
-// PayCallbackReq_ResourceMultiError is an error wrapping multiple validation
-// errors returned by PayCallbackReq_Resource.ValidateAll() if the designated
-// constraints aren't met.
-type PayCallbackReq_ResourceMultiError []error
-
-// Error returns a concatenation of all the error messages it wraps.
-func (m PayCallbackReq_ResourceMultiError) Error() string {
-	var msgs []string
-	for _, err := range m {
-		msgs = append(msgs, err.Error())
-	}
-	return strings.Join(msgs, "; ")
-}
-
-// AllErrors returns a list of validation violation errors.
-func (m PayCallbackReq_ResourceMultiError) AllErrors() []error { return m }
-
-// PayCallbackReq_ResourceValidationError is the validation error returned by
-// PayCallbackReq_Resource.Validate if the designated constraints aren't met.
-type PayCallbackReq_ResourceValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e PayCallbackReq_ResourceValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e PayCallbackReq_ResourceValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e PayCallbackReq_ResourceValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e PayCallbackReq_ResourceValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e PayCallbackReq_ResourceValidationError) ErrorName() string {
-	return "PayCallbackReq_ResourceValidationError"
-}
-
-// Error satisfies the builtin error interface
-func (e PayCallbackReq_ResourceValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sPayCallbackReq_Resource.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = PayCallbackReq_ResourceValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = PayCallbackReq_ResourceValidationError{}
-
-// Validate checks the field values on WxTransactionsReq_Amount with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, the first error encountered is returned, or nil if there are no violations.
-func (m *WxTransactionsReq_Amount) Validate() error {
-	return m.validate(false)
-}
-
-// ValidateAll checks the field values on WxTransactionsReq_Amount with the
-// rules defined in the proto definition for this message. If any rules are
-// violated, the result is a list of violation errors wrapped in
-// WxTransactionsReq_AmountMultiError, or nil if none found.
-func (m *WxTransactionsReq_Amount) ValidateAll() error {
-	return m.validate(true)
-}
-
-func (m *WxTransactionsReq_Amount) validate(all bool) error {
-	if m == nil {
-		return nil
-	}
-
-	var errors []error
-
-	// no validation rules for Total
-
-	// no validation rules for Currency
-
-	if len(errors) > 0 {
-		return WxTransactionsReq_AmountMultiError(errors)
-	}
-
-	return nil
-}
-
-// WxTransactionsReq_AmountMultiError is an error wrapping multiple validation
-// errors returned by WxTransactionsReq_Amount.ValidateAll() if the designated
-// constraints aren't met.
-type WxTransactionsReq_AmountMultiError []error
-
-// Error returns a concatenation of all the error messages it wraps.
-func (m WxTransactionsReq_AmountMultiError) Error() string {
-	var msgs []string
-	for _, err := range m {
-		msgs = append(msgs, err.Error())
-	}
-	return strings.Join(msgs, "; ")
-}
-
-// AllErrors returns a list of validation violation errors.
-func (m WxTransactionsReq_AmountMultiError) AllErrors() []error { return m }
-
-// WxTransactionsReq_AmountValidationError is the validation error returned by
-// WxTransactionsReq_Amount.Validate if the designated constraints aren't met.
-type WxTransactionsReq_AmountValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e WxTransactionsReq_AmountValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e WxTransactionsReq_AmountValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e WxTransactionsReq_AmountValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e WxTransactionsReq_AmountValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e WxTransactionsReq_AmountValidationError) ErrorName() string {
-	return "WxTransactionsReq_AmountValidationError"
-}
-
-// Error satisfies the builtin error interface
-func (e WxTransactionsReq_AmountValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sWxTransactionsReq_Amount.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = WxTransactionsReq_AmountValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = WxTransactionsReq_AmountValidationError{}
-
-// Validate checks the field values on WxTransactionsReq_Payer with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, the first error encountered is returned, or nil if there are no violations.
-func (m *WxTransactionsReq_Payer) Validate() error {
-	return m.validate(false)
-}
-
-// ValidateAll checks the field values on WxTransactionsReq_Payer with the
-// rules defined in the proto definition for this message. If any rules are
-// violated, the result is a list of violation errors wrapped in
-// WxTransactionsReq_PayerMultiError, or nil if none found.
-func (m *WxTransactionsReq_Payer) ValidateAll() error {
-	return m.validate(true)
-}
-
-func (m *WxTransactionsReq_Payer) validate(all bool) error {
-	if m == nil {
-		return nil
-	}
-
-	var errors []error
-
-	// no validation rules for Openid
-
-	if len(errors) > 0 {
-		return WxTransactionsReq_PayerMultiError(errors)
-	}
-
-	return nil
-}
-
-// WxTransactionsReq_PayerMultiError is an error wrapping multiple validation
-// errors returned by WxTransactionsReq_Payer.ValidateAll() if the designated
-// constraints aren't met.
-type WxTransactionsReq_PayerMultiError []error
-
-// Error returns a concatenation of all the error messages it wraps.
-func (m WxTransactionsReq_PayerMultiError) Error() string {
-	var msgs []string
-	for _, err := range m {
-		msgs = append(msgs, err.Error())
-	}
-	return strings.Join(msgs, "; ")
-}
-
-// AllErrors returns a list of validation violation errors.
-func (m WxTransactionsReq_PayerMultiError) AllErrors() []error { return m }
-
-// WxTransactionsReq_PayerValidationError is the validation error returned by
-// WxTransactionsReq_Payer.Validate if the designated constraints aren't met.
-type WxTransactionsReq_PayerValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e WxTransactionsReq_PayerValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e WxTransactionsReq_PayerValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e WxTransactionsReq_PayerValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e WxTransactionsReq_PayerValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e WxTransactionsReq_PayerValidationError) ErrorName() string {
-	return "WxTransactionsReq_PayerValidationError"
-}
-
-// Error satisfies the builtin error interface
-func (e WxTransactionsReq_PayerValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sWxTransactionsReq_Payer.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = WxTransactionsReq_PayerValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = WxTransactionsReq_PayerValidationError{}

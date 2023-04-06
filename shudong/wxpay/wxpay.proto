@@ -34,62 +34,65 @@ service WexinPaySvr {
       body: "*"
     };
   }
+  // GetUserVip 获取用户vip信息接口
+  rpc GetUserVip (GetUserVipReq) returns (GetUserVipRsp) {
+    option (google.api.http) = {
+      post: "/shudong/wxpay/weixin_pay_svr/get_user_vip"
+      body: "*"
+    };
+  }
 }
 
 /***************************微信支付服务*************************************/
 
 // 微信交易接口
 message TransactionsReq {
-  string user_open_id = 1;
+  string user_openid = 1 [(validate.rules).string = {min_len : 1}];
   enum VipType {
-    Unknown = 0;
-    Hour = 1; // 小时会员
+    Unkown = 0;
+    Hour = 1; // 时会员
     Day = 2; // 天会员
     Week = 3;   // 周会员
     Month = 4;  // 月会员
+    Quarter = 5;  // 季度会员
+    Year = 6;  // 年会员
   } 
-  VipType vip_type = 2;
+  VipType vip_type = 2 [(validate.rules).enum ={in: [1,2,3,4,5,6]}];
 }
 
 message TransactionsRsp {
   string appid = 1;
-  string prepay_id = 2; // 预支付订单
-  string timestamp = 3;
-  string nonce = 4;
-  string package = 5;
-  string sign_type = 6;
-  string pay_sign = 7;
+  string timestamp = 2;
+  string nonce = 3;
+  string package = 4;
+  string sign_type = 5;
+  string pay_sign = 6;
 }
 
 // 交易结果回调接口
-message PayCallbackReq {
-  string id = 1;
-  string create_time = 2;
-  string resource_type = 3;
-  string event_type = 4;
-  string summary = 5;
-  message Resource {
-    string original_type = 1;
-    string algorithm = 2;
-    string ciphertext = 3;
-    string associated_data = 4;
-    string nonce = 5;
-  }
-  Resource resource = 6;
-}
+message PayCallbackReq {}
 
 message PayCallbackRsp {
-  string code = 1;
+  string code = 1 ;
   string message = 2;
 }
 
- // 获取用户openid接口
+// 获取用户openid接口
 message GetUserOpenidReq {
-  string code = 1;
+  string code = 1 [(validate.rules).string = {min_len : 1}];
 }
 
 message GetUserOpenidRsp {
   string openid = 1;
+}
+
+// 获取用户vip信息接口
+message GetUserVipReq {
+  string user_openid = 1 [(validate.rules).string = {min_len : 1}];
+}
+
+message GetUserVipRsp {
+  int64 expire_ts = 1;
 }
 
 /**************************其他接口协议*****************************/
@@ -100,25 +103,4 @@ message GetAccessTokenRsp {
   string openid = 4;
   string scope = 5;
   string unionid = 6;
-}
-
-message WxTransactionsReq {
-  string mchid = 1;
-  string out_trade_no = 2;
-  string appid = 3;
-  string description = 4;
-  string notify_url = 5;
-  message Amount {
-    int64 total = 1;
-    string currency = 2;
-  } 
-  Amount amount = 6;
-  message Payer {
-    string openid = 1;
-  } 
-  Payer payer = 7;
-}
-
-message WxTransactionsRsp {
-  string prepay_id = 1;
 }
