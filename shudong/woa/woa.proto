@@ -55,6 +55,7 @@ message MessageReq {
   int64 msg_id = 7;
   int64 msg_data_id = 8;
   int64 idx = 9;
+  string even = 10;
 }
 
 // MessageRsp 接受普通消息接口回包
