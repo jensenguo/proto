@@ -68,10 +68,10 @@ func (m *TransactionsReq) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	if _, ok := _TransactionsReq_VipType_InLookup[m.GetVipType()]; !ok {
+	if _, ok := _TransactionsReq_VipPackage_InLookup[m.GetVipPackage()]; !ok {
 		err := TransactionsReqValidationError{
-			field:  "VipType",
-			reason: "value must be in list [Hour Day Week Month Quarter Year]",
+			field:  "VipPackage",
+			reason: "value must be in list [PackageOne PackageTwo PackageThree PackageFour]",
 		}
 		if !all {
 			return err
@@ -157,13 +157,11 @@ var _ interface {
 	ErrorName() string
 } = TransactionsReqValidationError{}
 
-var _TransactionsReq_VipType_InLookup = map[TransactionsReq_VipType]struct{}{
+var _TransactionsReq_VipPackage_InLookup = map[TransactionsReq_PackageType]struct{}{
 	1: {},
 	2: {},
 	3: {},
 	4: {},
-	5: {},
-	6: {},
 }
 
 // Validate checks the field values on TransactionsRsp with the rules defined
@@ -695,22 +693,22 @@ var _ interface {
 	ErrorName() string
 } = GetUserOpenidRspValidationError{}
 
-// Validate checks the field values on GetUserVipReq with the rules defined in
-// the proto definition for this message. If any rules are violated, the first
-// error encountered is returned, or nil if there are no violations.
-func (m *GetUserVipReq) Validate() error {
+// Validate checks the field values on GetUserAmountReq with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// first error encountered is returned, or nil if there are no violations.
+func (m *GetUserAmountReq) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on GetUserVipReq with the rules defined
-// in the proto definition for this message. If any rules are violated, the
-// result is a list of violation errors wrapped in GetUserVipReqMultiError, or
-// nil if none found.
-func (m *GetUserVipReq) ValidateAll() error {
+// ValidateAll checks the field values on GetUserAmountReq with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// GetUserAmountReqMultiError, or nil if none found.
+func (m *GetUserAmountReq) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *GetUserVipReq) validate(all bool) error {
+func (m *GetUserAmountReq) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -718,7 +716,7 @@ func (m *GetUserVipReq) validate(all bool) error {
 	var errors []error
 
 	if utf8.RuneCountInString(m.GetUserOpenid()) < 1 {
-		err := GetUserVipReqValidationError{
+		err := GetUserAmountReqValidationError{
 			field:  "UserOpenid",
 			reason: "value length must be at least 1 runes",
 		}
@@ -729,19 +727,19 @@ func (m *GetUserVipReq) validate(all bool) error {
 	}
 
 	if len(errors) > 0 {
-		return GetUserVipReqMultiError(errors)
+		return GetUserAmountReqMultiError(errors)
 	}
 
 	return nil
 }
 
-// GetUserVipReqMultiError is an error wrapping multiple validation errors
-// returned by GetUserVipReq.ValidateAll() if the designated constraints
+// GetUserAmountReqMultiError is an error wrapping multiple validation errors
+// returned by GetUserAmountReq.ValidateAll() if the designated constraints
 // aren't met.
-type GetUserVipReqMultiError []error
+type GetUserAmountReqMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m GetUserVipReqMultiError) Error() string {
+func (m GetUserAmountReqMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -750,11 +748,11 @@ func (m GetUserVipReqMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m GetUserVipReqMultiError) AllErrors() []error { return m }
+func (m GetUserAmountReqMultiError) AllErrors() []error { return m }
 
-// GetUserVipReqValidationError is the validation error returned by
-// GetUserVipReq.Validate if the designated constraints aren't met.
-type GetUserVipReqValidationError struct {
+// GetUserAmountReqValidationError is the validation error returned by
+// GetUserAmountReq.Validate if the designated constraints aren't met.
+type GetUserAmountReqValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -762,22 +760,22 @@ type GetUserVipReqValidationError struct {
 }
 
 // Field function returns field value.
-func (e GetUserVipReqValidationError) Field() string { return e.field }
+func (e GetUserAmountReqValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e GetUserVipReqValidationError) Reason() string { return e.reason }
+func (e GetUserAmountReqValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e GetUserVipReqValidationError) Cause() error { return e.cause }
+func (e GetUserAmountReqValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e GetUserVipReqValidationError) Key() bool { return e.key }
+func (e GetUserAmountReqValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e GetUserVipReqValidationError) ErrorName() string { return "GetUserVipReqValidationError" }
+func (e GetUserAmountReqValidationError) ErrorName() string { return "GetUserAmountReqValidationError" }
 
 // Error satisfies the builtin error interface
-func (e GetUserVipReqValidationError) Error() string {
+func (e GetUserAmountReqValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -789,14 +787,14 @@ func (e GetUserVipReqValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sGetUserVipReq.%s: %s%s",
+		"invalid %sGetUserAmountReq.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = GetUserVipReqValidationError{}
+var _ error = GetUserAmountReqValidationError{}
 
 var _ interface {
 	Field() string
@@ -804,46 +802,46 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = GetUserVipReqValidationError{}
+} = GetUserAmountReqValidationError{}
 
-// Validate checks the field values on GetUserVipRsp with the rules defined in
-// the proto definition for this message. If any rules are violated, the first
-// error encountered is returned, or nil if there are no violations.
-func (m *GetUserVipRsp) Validate() error {
+// Validate checks the field values on GetUserAmountRsp with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// first error encountered is returned, or nil if there are no violations.
+func (m *GetUserAmountRsp) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on GetUserVipRsp with the rules defined
-// in the proto definition for this message. If any rules are violated, the
-// result is a list of violation errors wrapped in GetUserVipRspMultiError, or
-// nil if none found.
-func (m *GetUserVipRsp) ValidateAll() error {
+// ValidateAll checks the field values on GetUserAmountRsp with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// GetUserAmountRspMultiError, or nil if none found.
+func (m *GetUserAmountRsp) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *GetUserVipRsp) validate(all bool) error {
+func (m *GetUserAmountRsp) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
 
 	var errors []error
 
-	// no validation rules for ExpireTs
+	// no validation rules for Amount
 
 	if len(errors) > 0 {
-		return GetUserVipRspMultiError(errors)
+		return GetUserAmountRspMultiError(errors)
 	}
 
 	return nil
 }
 
-// GetUserVipRspMultiError is an error wrapping multiple validation errors
-// returned by GetUserVipRsp.ValidateAll() if the designated constraints
+// GetUserAmountRspMultiError is an error wrapping multiple validation errors
+// returned by GetUserAmountRsp.ValidateAll() if the designated constraints
 // aren't met.
-type GetUserVipRspMultiError []error
+type GetUserAmountRspMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m GetUserVipRspMultiError) Error() string {
+func (m GetUserAmountRspMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -852,11 +850,11 @@ func (m GetUserVipRspMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m GetUserVipRspMultiError) AllErrors() []error { return m }
+func (m GetUserAmountRspMultiError) AllErrors() []error { return m }
 
-// GetUserVipRspValidationError is the validation error returned by
-// GetUserVipRsp.Validate if the designated constraints aren't met.
-type GetUserVipRspValidationError struct {
+// GetUserAmountRspValidationError is the validation error returned by
+// GetUserAmountRsp.Validate if the designated constraints aren't met.
+type GetUserAmountRspValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -864,22 +862,22 @@ type GetUserVipRspValidationError struct {
 }
 
 // Field function returns field value.
-func (e GetUserVipRspValidationError) Field() string { return e.field }
+func (e GetUserAmountRspValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e GetUserVipRspValidationError) Reason() string { return e.reason }
+func (e GetUserAmountRspValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e GetUserVipRspValidationError) Cause() error { return e.cause }
+func (e GetUserAmountRspValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e GetUserVipRspValidationError) Key() bool { return e.key }
+func (e GetUserAmountRspValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e GetUserVipRspValidationError) ErrorName() string { return "GetUserVipRspValidationError" }
+func (e GetUserAmountRspValidationError) ErrorName() string { return "GetUserAmountRspValidationError" }
 
 // Error satisfies the builtin error interface
-func (e GetUserVipRspValidationError) Error() string {
+func (e GetUserAmountRspValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -891,14 +889,14 @@ func (e GetUserVipRspValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sGetUserVipRsp.%s: %s%s",
+		"invalid %sGetUserAmountRsp.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = GetUserVipRspValidationError{}
+var _ error = GetUserAmountRspValidationError{}
 
 var _ interface {
 	Field() string
@@ -906,7 +904,7 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = GetUserVipRspValidationError{}
+} = GetUserAmountRspValidationError{}
 
 // Validate checks the field values on GetAccessTokenRsp with the rules defined
 // in the proto definition for this message. If any rules are violated, the

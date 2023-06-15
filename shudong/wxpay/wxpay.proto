@@ -34,10 +34,10 @@ service WexinPaySvr {
       body: "*"
     };
   }
-  // GetUserVip 获取用户vip信息接口
-  rpc GetUserVip (GetUserVipReq) returns (GetUserVipRsp) {
+  // GetUserAmount 获取用户积分
+  rpc GetUserAmount (GetUserAmountReq) returns (GetUserAmountRsp) {
     option (google.api.http) = {
-      post: "/shudong/wxpay/weixin_pay_svr/get_user_vip"
+      post: "/shudong/wxpay/weixin_pay_svr/get_user_amount"
       body: "*"
     };
   }
@@ -48,16 +48,14 @@ service WexinPaySvr {
 // 微信交易接口
 message TransactionsReq {
   string user_openid = 1 [(validate.rules).string = {min_len : 1}];
-  enum VipType {
+  enum PackageType {
     Unkown = 0;
-    Hour = 1; // 时会员
-    Day = 2; // 天会员
-    Week = 3;   // 周会员
-    Month = 4;  // 月会员
-    Quarter = 5;  // 季度会员
-    Year = 6;  // 年会员
+    PackageOne = 1; // 套餐1
+    PackageTwo = 2; // 套餐2
+    PackageThree = 3;   // 套餐3
+    PackageFour = 4;  // 套餐4
   } 
-  VipType vip_type = 2 [(validate.rules).enum ={in: [1,2,3,4,5,6]}];
+  PackageType vip_package = 2 [(validate.rules).enum ={in: [1, 2, 3, 4]}];
 }
 
 message TransactionsRsp {
@@ -87,12 +85,12 @@ message GetUserOpenidRsp {
 }
 
 // 获取用户vip信息接口
-message GetUserVipReq {
+message GetUserAmountReq {
   string user_openid = 1 [(validate.rules).string = {min_len : 1}];
 }
 
-message GetUserVipRsp {
-  int64 expire_ts = 1;
+message GetUserAmountRsp {
+  int32 amount = 1;
 }
 
 /**************************其他接口协议*****************************/

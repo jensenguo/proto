@@ -29,6 +29,7 @@ service BaseMsgSvr {
   }
 }
 
+
 /***************************基础消息服务*************************************/
 
 // CheckSignatureReq 签名校验接口请求
@@ -55,7 +56,7 @@ message MessageReq {
   int64 msg_id = 7;
   int64 msg_data_id = 8;
   int64 idx = 9;
-  string even = 10;
+  string event = 10;
 }
 
 // MessageRsp 接受普通消息接口回包
@@ -93,6 +94,8 @@ message GetStableAccessTokenReq {
 message GetStableAccessTokenRsp {
   string access_token = 1;
   int64 expire_in = 2;
+  int64 errcode = 3;
+  string errmsg = 4;
 }
 
 // 发送文本消息
@@ -112,6 +115,8 @@ message KefuImageMsg {
 }
 
 message SendKefuMsgRsp {
+  int64 errcode = 1;
+  string errmsg = 2;
 }
 
 // 上传图片消息
@@ -130,4 +135,22 @@ message SendTypeStatusReq {
 message SendTypeStatusRsp {
   int64 errcode = 1;
   string errmsg = 2;
+}
+
+// 发送模板消息
+message SendTemplateMsgReq {
+  string touser = 1;
+  string template_id = 2;
+  string url = 3;
+  message Keyword {
+    string value = 1; // 文字
+    string color = 2; // 颜色
+  }
+  map<string, Keyword> data = 4;
+}
+
+message SendTemplateMsgRsp {
+  int64 errcode = 1;
+  string errmsg = 2;
+  int64 msgid = 3;
 }
