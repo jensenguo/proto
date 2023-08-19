@@ -1,0 +1,93 @@
+syntax = "proto3";
+
+package msgsvr;
+
+option go_package = "github.com/jensenguo/proto/content-operation-master/msgsvr";
+
+import "google/api/annotations.proto";
+import "validate/validate.proto";
+import "gogoproto/gogo.proto";
+
+
+// MsgSvr 消息服务
+service MsgSvr {
+  // CheckSignature 签名校验接口
+  rpc CheckSignature (CheckSignatureReq) returns (CheckSignatureRsp) {
+    option (google.api.http) = {
+        get: "/content-operation-proxy/msgsvr/message"
+        response_body: "echostr"
+    };
+  }
+  // Message 微信公众号消息回调接口（所有微信公众号消息使用这个接口）
+  rpc Message (MessageReq) returns (MessageRsp) {
+    option (google.api.http) = {
+        post: "/content-operation-proxy/msgsvr/message"
+        body: "*"
+    };
+  }
+}
+
+// CheckSignatureReq 签名校验接口请求
+message CheckSignatureReq {
+  string signature = 1;
+  int64 timestamp = 2;
+  int64 nonce = 3;
+  string echostr = 4;
+}
+
+// CheckSignatureReq 签名校验接口回报
+message CheckSignatureRsp {
+  string echostr = 1;
+}
+
+// MessageReq 接受普通消息接口请求
+message MessageReq {
+  string to_user_name = 1;
+  string from_user_name = 2; 
+  int64 create_time = 3;
+  string msg_type = 4;
+  string content = 5;
+  string recognition = 6;
+  int64 msg_id = 7;
+  int64 msg_data_id = 8;
+  int64 idx = 9;
+  string event = 10;
+  string event_key = 11;
+  string ticket = 12;
+}
+
+// MessageRsp 接受普通消息接口回包
+message MessageRsp {
+  bytes XMLName = 1 [(gogoproto.customtype) = "encoding/xml.Name", (gogoproto.moretags) = 'xml:"xml"'];
+  ToUserName to_user_name = 2;
+  FromUserName from_user_name = 3; 
+  int64 create_time = 4;
+  string msg_type = 5;
+  Content content = 6;
+  Video video = 7;
+}
+
+message Video {
+  MediaId media_id = 1;
+  Title title = 2 ;
+}
+
+message ToUserName {
+  string to_user_name = 1 [(gogoproto.moretags) = 'xml:",cdata"'];
+}
+
+message FromUserName {
+  string from_user_name = 1 [(gogoproto.moretags) = 'xml:",cdata"'];
+}
+
+message Content {
+  string content = 1 [(gogoproto.moretags) = 'xml:",cdata"'];
+}
+
+message MediaId {
+  string media_id = 1 [(gogoproto.moretags) = 'xml:",cdata"'];
+}
+
+message Title {
+  string title = 1 [(gogoproto.moretags) = 'xml:",cdata"'];
+}

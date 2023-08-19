@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package outerproxy;
+
+option go_package = "github.com/jensenguo/proto/content-operation-master/outerproxy";
+
+import "google/api/annotations.proto";
+import "validate/validate.proto";
+import "gogoproto/gogo.proto";
+
+
+// OpenAISvr openai服务服务
+service OpenAISvr {
+  // CreateChatCompletion 用户登录接口
+  rpc CreateChatCompletion (CreateChatCompletionReq) returns (CreateChatCompletionRsp) {
+    option (google.api.http) = {
+      post: "/content-operation-proxy/outerproxy-openaisvr/create-chat-completion"
+      body: "*"
+    };
+  }
+  // CreateImage 创建图片
+  rpc CreateImage (CreateImageReq) returns (CreateImageRsp) {
+    option (google.api.http) = {
+      post: "/content-operation-proxy/outerproxy-openaisvr/create-image"
+      body: "*"
+    };
+  }
+}
+
+/********************************创建聊天接口*******************************/
+message ChatCompletionMessage {
+  string role = 1 [(validate.rules).string = {min_len : 1}];
+  string content = 2 [(validate.rules).string = {min_len : 1}];
+}
+message CreateChatCompletionReq {
+  string model = 1 [(validate.rules).string = {min_len : 1}];
+  string userid = 2 [(validate.rules).string = {min_len : 1}]; 
+  repeated ChatCompletionMessage messages = 3 [(validate.rules).repeated = {min_items : 1}];
+}
+
+message CreateChatCompletionRsp {
+  string content = 1;
+}
+
+/********************************创建图片接口*******************************/
+message CreateImageReq {
+  string prompt = 1;
+}
+
+message CreateImageRsp {
+  string b64_json = 1;
+}

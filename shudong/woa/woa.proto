@@ -57,6 +57,8 @@ message MessageReq {
   int64 msg_data_id = 8;
   int64 idx = 9;
   string event = 10;
+  string event_key = 11;
+  string ticket = 12;
 }
 
 // MessageRsp 接受普通消息接口回包
@@ -67,6 +69,12 @@ message MessageRsp {
   int64 create_time = 4;
   string msg_type = 5;
   Content content = 6;
+  Video video = 7;
+}
+
+message Video {
+  MediaId media_id = 1;
+  Title title = 2 ;
 }
 
 message ToUserName {
@@ -80,6 +88,15 @@ message FromUserName {
 message Content {
   string content = 1 [(gogoproto.moretags) = 'xml:",cdata"'];
 }
+
+message MediaId {
+  string media_id = 1 [(gogoproto.moretags) = 'xml:",cdata"'];
+}
+
+message Title {
+  string title = 1 [(gogoproto.moretags) = 'xml:",cdata"'];
+}
+
 
 /***************************其他内部使用协议*************************************/
 
@@ -124,6 +141,8 @@ message UploadImageMsgRsp {
   string type = 1;
   string media_id = 2;
   int64 created_at = 3;
+  int64 errcode = 4;
+  string errmsg = 5;
 }
 
 // 发送客服输入状态
@@ -153,4 +172,23 @@ message SendTemplateMsgRsp {
   int64 errcode = 1;
   string errmsg = 2;
   int64 msgid = 3;
+}
+
+// 生成二维码
+message CreateQRCodeReq {
+  int64 expire_seconds = 1;
+  string action_name = 2;
+  message ActionInfo {
+    message Scence {
+      string scene_str = 1;
+    } 
+    Scence scene = 1;
+  }
+  ActionInfo action_info = 3;
+}
+
+message CreateQRCodeRsp {
+  string ticket = 1;
+  int64 expire_seconds = 2;
+  string url = 3;
 }

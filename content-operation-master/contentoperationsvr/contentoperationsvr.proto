@@ -1,0 +1,304 @@
+syntax = "proto3";
+
+package contentoperationsvr;
+
+option go_package = "github.com/jensenguo/proto/content-operation-master/contentoperationsvr";
+
+import "google/api/annotations.proto";
+import "validate/validate.proto";
+import "gogoproto/gogo.proto";
+
+
+// ContentOperationSvr 内容运营服务
+service ContentOperationSvr {
+  // Login 用户授权登录
+  rpc Login (LoginReq) returns (LoginRsp) {
+    option (google.api.http) = {
+      post: "/content-operation-proxy/content-operation-svr/login"
+      body: "*"
+    };
+  }
+  // GetUserInfo 查询用户信息
+  rpc GetUserInfo (GetUserInfoReq) returns (GetUserInfoRsp) {
+    option (google.api.http) = {
+      post: "/content-operation-proxy/content-operation-svr/get-user-info"
+      body: "*"
+    };
+  }
+  // PublishArticle 发布文章
+  rpc PublishArticle (PublishArticleReq) returns (PublishArticleRsp) {
+    option (google.api.http) = {
+      post: "/content-operation-proxy/content-operation-svr/publish-article"
+      body: "*"
+    };
+  }
+  // SetArticleStatus 设置文章状态
+  rpc SetArticleStatus (SetArticleStatusReq) returns (SetArticleStatusRsp) {
+    option (google.api.http) = {
+      post: "/content-operation-proxy/content-operation-svr/set-article-status"
+      body: "*"
+    };
+  }
+  // GetMyArticles 查询我的文章列表
+  rpc GetMyArticles (GetMyArticlesReq) returns (GetMyArticlesRsp) {
+    option (google.api.http) = {
+      post: "/content-operation-proxy/content-operation-svr/get-my-articles"
+      body: "*"
+    };
+  }
+  // GetArticleReaders 查询文章阅读列表
+  rpc GetArticleReaders (GetArticleReadersReq) returns (GetArticleReadersRsp) {
+    option (google.api.http) = {
+      post: "/content-operation-proxy/content-operation-svr/get-article-readers"
+      body: "*"
+    };
+  }
+  // ReadArticle 开始读文章
+  rpc ReadArticle (ReadArticleReq) returns (ReadArticleRsp) {
+    option (google.api.http) = {
+      post: "/content-operation-proxy/content-operation-svr/read-article"
+      body: "*"
+    };
+  }
+  // AnswerArticle 回复文章阅读
+  rpc AnswerArticle (AnswerArticleReq) returns (AnswerArticleRsp) {
+    option (google.api.http) = {
+      post: "/content-operation-proxy/content-operation-svr/answer-article"
+      body: "*"
+    };
+  }
+  // GetShowArticles 查询外显文章
+  rpc GetShowArticles (GetShowArticlesReq) returns (GetShowArticlesRsp) {
+    option (google.api.http) = {
+      post: "/content-operation-proxy/content-operation-svr/get-show-article"
+      body: "*"
+    };
+  }
+  // PublishWoa 发布公众号
+  rpc PublishWoa (PublishWoaReq) returns (PublishWoaRsp) {
+    option (google.api.http) = {
+      post: "/content-operation-proxy/content-operation-svr/publish-woa"
+      body: "*"
+    };
+  }
+  // SetWoaStatus 设置文章状态
+  rpc SetWoaStatus (SetWoaStatusReq) returns (SetWoaStatusRsp) {
+    option (google.api.http) = {
+      post: "/content-operation-proxy/content-operation-svr/set-woa-status"
+      body: "*"
+    };
+  }
+  // GetMyWoas 查询我的公众号列表
+  rpc GetMyWoas (GetMyWoasReq) returns (GetMyWoasRsp) {
+    option (google.api.http) = {
+      post: "/content-operation-proxy/content-operation-svr/get-my-woas"
+      body: "*"
+    };
+  }
+  // GetWoaFans 查询公众号关注列表
+  rpc GetWoaFans (GetWoaFansReq) returns (GetWoaFansRsp) {
+    option (google.api.http) = {
+      post: "/content-operation-proxy/content-operation-svr/get-woa-fans"
+      body: "*"
+    };
+  }
+  // FollowWoa 关注公众号
+  rpc FollowWoa (FollowWoaReq) returns (FollowWoaRsp) {
+    option (google.api.http) = {
+      post: "/content-operation-proxy/content-operation-svr/read-article"
+      body: "*"
+    };
+  }
+  // AnswerWoa 回复公众号
+  rpc AnswerWoa (AnswerWoaReq) returns (AnswerWoaRsp) {
+    option (google.api.http) = {
+      post: "/content-operation-proxy/content-operation-svr/answer-article"
+      body: "*"
+    };
+  }
+}
+
+// UserID 用户ID
+message UserID {
+  string union_id = 1;
+  string openid = 2;
+  string access_token = 3;
+}
+
+message User {
+  UserID user_id = 1;
+  string head_url = 2;
+  string nick_name = 3;
+}
+
+enum ContentStatus {
+  ORIGIN = 0; // 初始
+  ONLINE = 1; // 上架
+  OFFLINE = 2; // 下架
+  DELETE = 3; // 删除
+  TOP = 4; // 置顶
+}
+
+/********************************用户信息接口*******************************/
+message LoginReq {
+  string code = 1 [(validate.rules).string = {min_len : 1}];
+}
+
+message LoginRsp {
+  UserID user_id = 1;
+}
+
+message UserInfo {
+  User user = 1;
+  int32 article_num = 2;
+  int32 woa_num = 3;
+  int32 read_num = 4;
+  int32 fans_num = 5;
+}
+
+message GetUserInfoReq {
+  UserID user_id = 1;
+}
+
+message GetUserInfoRsp {
+  UserInfo user_info = 1;
+}
+
+/********************************文章接口*******************************/
+message Article {
+  User author = 1;
+  string article_id = 2;
+  string title = 3;
+  string desc = 4;
+  string url = 5;
+  string answer = 6;
+  int64 publish_ts = 7;
+  ContentStatus status = 8;
+}
+
+message PublishArticleReq {
+  UserID user_id = 1;
+  Article article = 2;
+}
+
+message PublishArticleRsp {
+  string article_id = 1;
+}
+
+message GetMyArticlesReq {
+  UserID user_id = 1;
+}
+
+message GetMyArticlesRsp {
+  repeated Article articles = 1;
+}
+
+message GetArticleReadersReq {
+  UserID user_id = 1;
+  string article_id = 2;
+}
+
+message GetArticleReadersRsp {
+  repeated User users = 1;
+}
+
+message SetArticleStatusReq {
+  UserID user_id = 1;
+  string article_id = 2;
+  ContentStatus status = 3;
+}
+
+message SetArticleStatusRsp {
+}
+
+message ReadArticleReq {
+  UserID user_id = 1;
+  string article_id = 2;
+}
+
+message ReadArticleRsp {
+}
+
+message AnswerArticleReq {
+  UserID user_id = 1;
+  string answer = 3;
+}
+
+message AnswerArticleRsp {
+}
+
+message GetShowArticlesReq {
+  UserID user_id = 1;
+  int32 num = 2;
+  string trans_params = 3;
+}
+
+message GetShowArticlesRsp {
+  repeated Article articles = 1;
+  bool is_end = 2;
+  string trans_params = 3;
+}
+
+/********************************发布公众号接口*******************************/
+message Woa {
+  User owner = 1;
+  string woa_id = 2;
+  string origin_id = 3;
+  string name = 4;
+  string desc = 5;
+  string answer = 6;
+  int64 publish_ts = 7;
+  ContentStatus status = 8;
+}
+
+message PublishWoaReq {
+  UserID user_id = 1;
+  Woa woa = 2;
+}
+
+message PublishWoaRsp {
+  string woa_id = 1;
+}
+
+message GetMyWoasReq {
+  UserID user_id = 1;
+  UserID owner = 2;
+}
+
+message GetMyWoasRsp {
+  repeated Woa wos = 1;
+}
+
+message GetWoaFansReq {
+  UserID user_id = 1;
+  string woa_id = 2;
+}
+
+message GetWoaFansRsp {
+  repeated User fans = 1;
+}
+
+message SetWoaStatusReq {
+  UserID user_id = 1;
+  string woa_id = 2;
+  ContentStatus status = 3;
+}
+
+message SetWoaStatusRsp {
+}
+
+message FollowWoaReq {
+  UserID user_id = 1;
+  string woa_id = 2;
+}
+
+message FollowWoaRsp {
+}
+
+message AnswerWoaReq {
+  UserID user_id = 1;
+  string answer = 3;
+}
+
+message AnswerWoaRsp {
+}

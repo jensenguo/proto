@@ -291,6 +291,10 @@ func (m *MessageReq) validate(all bool) error {
 
 	// no validation rules for Event
 
+	// no validation rules for EventKey
+
+	// no validation rules for Ticket
+
 	if len(errors) > 0 {
 		return MessageReqMultiError(errors)
 	}
@@ -483,6 +487,35 @@ func (m *MessageRsp) validate(all bool) error {
 		}
 	}
 
+	if all {
+		switch v := interface{}(m.GetVideo()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, MessageRspValidationError{
+					field:  "Video",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, MessageRspValidationError{
+					field:  "Video",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetVideo()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return MessageRspValidationError{
+				field:  "Video",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
 	if len(errors) > 0 {
 		return MessageRspMultiError(errors)
 	}
@@ -559,6 +592,162 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = MessageRspValidationError{}
+
+// Validate checks the field values on Video with the rules defined in the
+// proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *Video) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on Video with the rules defined in the
+// proto definition for this message. If any rules are violated, the result is
+// a list of violation errors wrapped in VideoMultiError, or nil if none found.
+func (m *Video) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *Video) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if all {
+		switch v := interface{}(m.GetMediaId()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, VideoValidationError{
+					field:  "MediaId",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, VideoValidationError{
+					field:  "MediaId",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetMediaId()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return VideoValidationError{
+				field:  "MediaId",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if all {
+		switch v := interface{}(m.GetTitle()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, VideoValidationError{
+					field:  "Title",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, VideoValidationError{
+					field:  "Title",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetTitle()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return VideoValidationError{
+				field:  "Title",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return VideoMultiError(errors)
+	}
+
+	return nil
+}
+
+// VideoMultiError is an error wrapping multiple validation errors returned by
+// Video.ValidateAll() if the designated constraints aren't met.
+type VideoMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m VideoMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m VideoMultiError) AllErrors() []error { return m }
+
+// VideoValidationError is the validation error returned by Video.Validate if
+// the designated constraints aren't met.
+type VideoValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e VideoValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e VideoValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e VideoValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e VideoValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e VideoValidationError) ErrorName() string { return "VideoValidationError" }
+
+// Error satisfies the builtin error interface
+func (e VideoValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sVideo.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = VideoValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = VideoValidationError{}
 
 // Validate checks the field values on ToUserName with the rules defined in the
 // proto definition for this message. If any rules are violated, the first
@@ -861,6 +1050,206 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = ContentValidationError{}
+
+// Validate checks the field values on MediaId with the rules defined in the
+// proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *MediaId) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on MediaId with the rules defined in the
+// proto definition for this message. If any rules are violated, the result is
+// a list of violation errors wrapped in MediaIdMultiError, or nil if none found.
+func (m *MediaId) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *MediaId) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for MediaId
+
+	if len(errors) > 0 {
+		return MediaIdMultiError(errors)
+	}
+
+	return nil
+}
+
+// MediaIdMultiError is an error wrapping multiple validation errors returned
+// by MediaId.ValidateAll() if the designated constraints aren't met.
+type MediaIdMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m MediaIdMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m MediaIdMultiError) AllErrors() []error { return m }
+
+// MediaIdValidationError is the validation error returned by MediaId.Validate
+// if the designated constraints aren't met.
+type MediaIdValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e MediaIdValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e MediaIdValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e MediaIdValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e MediaIdValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e MediaIdValidationError) ErrorName() string { return "MediaIdValidationError" }
+
+// Error satisfies the builtin error interface
+func (e MediaIdValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sMediaId.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = MediaIdValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = MediaIdValidationError{}
+
+// Validate checks the field values on Title with the rules defined in the
+// proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *Title) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on Title with the rules defined in the
+// proto definition for this message. If any rules are violated, the result is
+// a list of violation errors wrapped in TitleMultiError, or nil if none found.
+func (m *Title) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *Title) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Title
+
+	if len(errors) > 0 {
+		return TitleMultiError(errors)
+	}
+
+	return nil
+}
+
+// TitleMultiError is an error wrapping multiple validation errors returned by
+// Title.ValidateAll() if the designated constraints aren't met.
+type TitleMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m TitleMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m TitleMultiError) AllErrors() []error { return m }
+
+// TitleValidationError is the validation error returned by Title.Validate if
+// the designated constraints aren't met.
+type TitleValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e TitleValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e TitleValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e TitleValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e TitleValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e TitleValidationError) ErrorName() string { return "TitleValidationError" }
+
+// Error satisfies the builtin error interface
+func (e TitleValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sTitle.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = TitleValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = TitleValidationError{}
 
 // Validate checks the field values on GetStableAccessTokenReq with the rules
 // defined in the proto definition for this message. If any rules are
@@ -1578,6 +1967,10 @@ func (m *UploadImageMsgRsp) validate(all bool) error {
 
 	// no validation rules for CreatedAt
 
+	// no validation rules for Errcode
+
+	// no validation rules for Errmsg
+
 	if len(errors) > 0 {
 		return UploadImageMsgRspMultiError(errors)
 	}
@@ -2132,6 +2525,245 @@ var _ interface {
 	ErrorName() string
 } = SendTemplateMsgRspValidationError{}
 
+// Validate checks the field values on CreateQRCodeReq with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// first error encountered is returned, or nil if there are no violations.
+func (m *CreateQRCodeReq) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on CreateQRCodeReq with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// CreateQRCodeReqMultiError, or nil if none found.
+func (m *CreateQRCodeReq) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *CreateQRCodeReq) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for ExpireSeconds
+
+	// no validation rules for ActionName
+
+	if all {
+		switch v := interface{}(m.GetActionInfo()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, CreateQRCodeReqValidationError{
+					field:  "ActionInfo",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, CreateQRCodeReqValidationError{
+					field:  "ActionInfo",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetActionInfo()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return CreateQRCodeReqValidationError{
+				field:  "ActionInfo",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return CreateQRCodeReqMultiError(errors)
+	}
+
+	return nil
+}
+
+// CreateQRCodeReqMultiError is an error wrapping multiple validation errors
+// returned by CreateQRCodeReq.ValidateAll() if the designated constraints
+// aren't met.
+type CreateQRCodeReqMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m CreateQRCodeReqMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m CreateQRCodeReqMultiError) AllErrors() []error { return m }
+
+// CreateQRCodeReqValidationError is the validation error returned by
+// CreateQRCodeReq.Validate if the designated constraints aren't met.
+type CreateQRCodeReqValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e CreateQRCodeReqValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e CreateQRCodeReqValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e CreateQRCodeReqValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e CreateQRCodeReqValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e CreateQRCodeReqValidationError) ErrorName() string { return "CreateQRCodeReqValidationError" }
+
+// Error satisfies the builtin error interface
+func (e CreateQRCodeReqValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sCreateQRCodeReq.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = CreateQRCodeReqValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = CreateQRCodeReqValidationError{}
+
+// Validate checks the field values on CreateQRCodeRsp with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// first error encountered is returned, or nil if there are no violations.
+func (m *CreateQRCodeRsp) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on CreateQRCodeRsp with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// CreateQRCodeRspMultiError, or nil if none found.
+func (m *CreateQRCodeRsp) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *CreateQRCodeRsp) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Ticket
+
+	// no validation rules for ExpireSeconds
+
+	// no validation rules for Url
+
+	if len(errors) > 0 {
+		return CreateQRCodeRspMultiError(errors)
+	}
+
+	return nil
+}
+
+// CreateQRCodeRspMultiError is an error wrapping multiple validation errors
+// returned by CreateQRCodeRsp.ValidateAll() if the designated constraints
+// aren't met.
+type CreateQRCodeRspMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m CreateQRCodeRspMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m CreateQRCodeRspMultiError) AllErrors() []error { return m }
+
+// CreateQRCodeRspValidationError is the validation error returned by
+// CreateQRCodeRsp.Validate if the designated constraints aren't met.
+type CreateQRCodeRspValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e CreateQRCodeRspValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e CreateQRCodeRspValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e CreateQRCodeRspValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e CreateQRCodeRspValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e CreateQRCodeRspValidationError) ErrorName() string { return "CreateQRCodeRspValidationError" }
+
+// Error satisfies the builtin error interface
+func (e CreateQRCodeRspValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sCreateQRCodeRsp.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = CreateQRCodeRspValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = CreateQRCodeRspValidationError{}
+
 // Validate checks the field values on SendTemplateMsgReq_Keyword with the
 // rules defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
@@ -2237,3 +2869,241 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = SendTemplateMsgReq_KeywordValidationError{}
+
+// Validate checks the field values on CreateQRCodeReq_ActionInfo with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *CreateQRCodeReq_ActionInfo) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on CreateQRCodeReq_ActionInfo with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// CreateQRCodeReq_ActionInfoMultiError, or nil if none found.
+func (m *CreateQRCodeReq_ActionInfo) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *CreateQRCodeReq_ActionInfo) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if all {
+		switch v := interface{}(m.GetScene()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, CreateQRCodeReq_ActionInfoValidationError{
+					field:  "Scene",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, CreateQRCodeReq_ActionInfoValidationError{
+					field:  "Scene",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetScene()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return CreateQRCodeReq_ActionInfoValidationError{
+				field:  "Scene",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return CreateQRCodeReq_ActionInfoMultiError(errors)
+	}
+
+	return nil
+}
+
+// CreateQRCodeReq_ActionInfoMultiError is an error wrapping multiple
+// validation errors returned by CreateQRCodeReq_ActionInfo.ValidateAll() if
+// the designated constraints aren't met.
+type CreateQRCodeReq_ActionInfoMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m CreateQRCodeReq_ActionInfoMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m CreateQRCodeReq_ActionInfoMultiError) AllErrors() []error { return m }
+
+// CreateQRCodeReq_ActionInfoValidationError is the validation error returned
+// by CreateQRCodeReq_ActionInfo.Validate if the designated constraints aren't met.
+type CreateQRCodeReq_ActionInfoValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e CreateQRCodeReq_ActionInfoValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e CreateQRCodeReq_ActionInfoValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e CreateQRCodeReq_ActionInfoValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e CreateQRCodeReq_ActionInfoValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e CreateQRCodeReq_ActionInfoValidationError) ErrorName() string {
+	return "CreateQRCodeReq_ActionInfoValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e CreateQRCodeReq_ActionInfoValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sCreateQRCodeReq_ActionInfo.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = CreateQRCodeReq_ActionInfoValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = CreateQRCodeReq_ActionInfoValidationError{}
+
+// Validate checks the field values on CreateQRCodeReq_ActionInfo_Scence with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the first error encountered is returned, or nil if there are
+// no violations.
+func (m *CreateQRCodeReq_ActionInfo_Scence) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on CreateQRCodeReq_ActionInfo_Scence
+// with the rules defined in the proto definition for this message. If any
+// rules are violated, the result is a list of violation errors wrapped in
+// CreateQRCodeReq_ActionInfo_ScenceMultiError, or nil if none found.
+func (m *CreateQRCodeReq_ActionInfo_Scence) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *CreateQRCodeReq_ActionInfo_Scence) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for SceneStr
+
+	if len(errors) > 0 {
+		return CreateQRCodeReq_ActionInfo_ScenceMultiError(errors)
+	}
+
+	return nil
+}
+
+// CreateQRCodeReq_ActionInfo_ScenceMultiError is an error wrapping multiple
+// validation errors returned by
+// CreateQRCodeReq_ActionInfo_Scence.ValidateAll() if the designated
+// constraints aren't met.
+type CreateQRCodeReq_ActionInfo_ScenceMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m CreateQRCodeReq_ActionInfo_ScenceMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m CreateQRCodeReq_ActionInfo_ScenceMultiError) AllErrors() []error { return m }
+
+// CreateQRCodeReq_ActionInfo_ScenceValidationError is the validation error
+// returned by CreateQRCodeReq_ActionInfo_Scence.Validate if the designated
+// constraints aren't met.
+type CreateQRCodeReq_ActionInfo_ScenceValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e CreateQRCodeReq_ActionInfo_ScenceValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e CreateQRCodeReq_ActionInfo_ScenceValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e CreateQRCodeReq_ActionInfo_ScenceValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e CreateQRCodeReq_ActionInfo_ScenceValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e CreateQRCodeReq_ActionInfo_ScenceValidationError) ErrorName() string {
+	return "CreateQRCodeReq_ActionInfo_ScenceValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e CreateQRCodeReq_ActionInfo_ScenceValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sCreateQRCodeReq_ActionInfo_Scence.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = CreateQRCodeReq_ActionInfo_ScenceValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = CreateQRCodeReq_ActionInfo_ScenceValidationError{}

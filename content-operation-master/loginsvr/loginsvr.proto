@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package loginsvr;
+
+option go_package = "github.com/jensenguo/proto/content-operation-master/loginsvr";
+
+import "google/api/annotations.proto";
+import "validate/validate.proto";
+import "gogoproto/gogo.proto";
+
+
+// LoginSvr 微信公众号用户登录服务
+service LoginSvr {
+  // Login 用户登录接口
+  rpc Login (LoginReq) returns (LoginRsp) {
+    option (google.api.http) = {
+      post: "/content_operation_master/loginsvr/login"
+      body: "*"
+    };
+  }
+}
+
+/***************************获取用户openid接口**************************/
+message LoginReq {
+  string code = 1 [(validate.rules).string = {min_len : 1}];
+}
+
+message LoginRsp {
+  string openid = 1;
+  string unionid = 2; //同一个微信号使用同一个unoinid
+  string nick_name = 3; // 昵称
+  string head_url = 4; // 头像
+}
